@@ -12,7 +12,7 @@ npm install -g yarn
 
 2. Clone repo
 ```bash
-git clone 
+git clone https://github.com/DarklMoon/Journii.git
 ```
 
 3. Install dependency
