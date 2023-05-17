@@ -22,5 +22,5 @@ yarn
 
 4. Run server
 ```bash
-yarn serve
+yarn dev
 ```

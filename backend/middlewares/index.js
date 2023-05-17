@@ -19,7 +19,7 @@ async function isLoggedIn(req, res, next) {
   }
 
   // Check token
-  const [tokens] = await pool.query("SELECT * FROM tokens WHERE token = ?", [
+  const [tokens] = await pool.query("SELECT * FROM token WHERE token = ?", [
     part2,
   ]);
   const token = tokens[0];
@@ -29,8 +29,8 @@ async function isLoggedIn(req, res, next) {
 
   // Set user
   const [users] = await pool.query(
-    "SELECT id, username, first_name, last_name, email, picture, mobile, join_date, role " +
-      "FROM users WHERE id = ?",
+    "SELECT id, username, first_name, last_name, email, role " +
+      "FROM user WHERE id = ?",
     [token.user_id]
   );
   //set เข้าไปใน req.
@@ -39,7 +39,22 @@ async function isLoggedIn(req, res, next) {
   next();
 }
 
+//ดูว่าเป็นบล็อกของตัวเองรึป่าว
+const blogOwner = async (req, res, next) => {
+  if (req.user.role === 'admin') {
+      return next()
+  }
+  const [[blog]] = await pool.query('SELECT * FROM user WHERE id=?', [req.params.id])
+
+  if (blog.create_by_id !== req.user.id) {
+      return res.status(403).send('You do not have permission to perform this action')
+  }
+
+  next()
+}
+
 module.exports = {
   logger,
   isLoggedIn,
+  blogOwner,
 };
