@@ -4,9 +4,9 @@
             <h1 class="text-2xl font-medium mt-10">สรุปบันทึก</h1>
             <div class="w-4/5 h-screen p-5 pt-10">
                 <div class="flex flex-col justify-center items-center pt-3">
-                    <div class='w-[50vw] h-[70vh] border-2 border-gray-500 rounded-md p-4 bg-white'>
+                    <div class='w-[50vw] h-[70vh] border-2 border-[#513F3F]  rounded-md p-4 bg-white'>
                         <template v-if="showForm1st[0] != null">
-                            <div v-for="item in showForm1st">
+                            <div v-for="(item, index) in showForm1st" :key="index">
                                 <h1 class="text-xl">{{item.title}}</h1>
                                 <hr class="w-1/2 h-[2px] border-none bg-gray-400">
                                 <div class="grid grid-cols-2 mt-3">
@@ -94,7 +94,7 @@
                     </div>
                     <div class="mt-5 border border-black-500 overflow-auto rounded-lg shadow">
                         <table class="table-auto w-full">
-                            <thead class="bg-gray-50 border-b-2 border-gray-200">
+                            <thead class="bg-brown-light border-b-2 border-gray-200 text-brown">
                                 <tr>
                                     <th class="">No.</th>
                                     <th class="w-24">Title</th>
@@ -105,22 +105,22 @@
                                     <th class="w-32">Time</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-grey-100">
+                            <tbody class="divide-y divide-grey-100 bg-white">
                                 <template v-if="showData2nd.length != 0">
-                                    <tr v-for="(item,index) in showData2nd">
+                                    <tr v-for="(item,index) in showData2nd" :key="index" >
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                             <a href="#" class="font-bold text-brown hover:underline ">{{index+1}}</a>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none" name="title" readonly id="" cols="15" rows="2">{{item.title}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="title" readonly id="" cols="15" rows="2">{{item.title}}
                                             </textarea>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none" name="address" readonly id="" cols="26" rows="1">{{item.address}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="26" rows="1">{{item.address}}
                                             </textarea>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
                                             </textarea>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">

@@ -16,29 +16,30 @@
                             <div class="grid grid-rows-2 grid-cols-2">
                                 <div class="pt-5">
                                     <p>STREET ADDRESS</p>
-                                    <input type="text" v-model="form2nd.address.v_street" class="input-memoAdd" size="30" placeholder="street address">
+                                    <input type="text" v-model="form2nd.street" class="input-memoAdd" size="30" placeholder="street address">
                                 </div>
                             
                                 <div class="pt-5">
                                     <div class="relative">
-                                        <p>COUNTRY</p>
-                                        <select  name="country" v-model="form2nd.address.v_country" class="input-memoAdd" >
+                                        <p>COUNTRY<span v-show="form2nd.country == '' " class="text-md text-red-400">*</span></p>
+                                        <select @change="checkCountry()" :class="{'border-2 border-red-500' : form2nd.error.e_country}" name="country" v-model="form2nd.country" class="input-memoAdd" >
                                             <!-- <option disabled selected value="">Please select country</option> -->
+                                            <option disabled selected value="" >Please select country</option>
                                             <option v-for="(item, index) in form1st.country_list" :key="index" :value="item">{{item}}</option>
-                                        </select>
-                                        
+                                        </select><br>
+                                        <span class="relative bottom-0 text-sm text-red-400">{{form2nd.error.e_country}}</span>
                                     </div>
 
                                 </div>
                             
                                 <div class="pt-5">
                                     <p>PROVINCE</p>
-                                    <input type="text" v-model="form2nd.address.v_province" class="input-memoAdd" size="30" placeholder="province">
+                                    <input type="text" v-model="form2nd.province" class="input-memoAdd" size="30" placeholder="province">
                                 </div>
                             
                                 <div class="pt-5">
                                     <p>CITY</p>
-                                    <input type="text" v-model="form2nd.address.v_city" class="input-memoAdd" size="30" placeholder="city">
+                                    <input type="text" v-model="form2nd.city" class="input-memoAdd" size="30" placeholder="city">
                                 </div>
                             </div>
                             <hr class="mt-5">
@@ -46,9 +47,10 @@
                             <div class="grid grid-cols-2">                   
                                 <div class="pt-5">
                                     <div class="relative">
-                                        <p>PRICE</p>
-                                        <input type="number" v-model="form2nd.price" class="input-memoAdd" size="30" placeholder="0.00">
+                                        <p>PRICE<span v-show="form2nd.price == '' " class="text-md text-red-400">*</span></p>
+                                        <input type="number" @input="checkPrice()" :class="{'border-2 border-red-500' : form2nd.error.e_price}" v-model="form2nd.price" class="input-memoAdd" size="30" placeholder="0.00">
                                         <span class="text-xl text-gray-400">$</span><br>
+                                        <span class="relative bottom-0 text-sm text-red-400">{{form2nd.error.e_price}}</span>
                                     </div>
                                 </div>
                                 
@@ -59,14 +61,16 @@
                                 <div class="pt-5">
                                     <div class="relative">
                                         <p>START TIME :</p>
-                                        <input type="datetime-local" v-model="form2nd.time.v_start" class="input-memoAdd" size="30">
+                                        <input type="datetime-local" @change="checkTimeStart()" :class="{'border-2 border-red-500' : form2nd.error.e_start}" v-model="form2nd.start" class="input-memoAdd" size="30">
+                                        <span class="relative bottom-0 text-sm text-red-400">{{form2nd.error.e_start}}</span>
                                     </div>
                                 </div>
                             
                                 <div class="pt-5">
                                     <div class="relative">
                                         <p>END TIME :</p>
-                                        <input type="datetime-local" v-model="form2nd.time.v_end" class="input-memoAdd" size="30">
+                                        <input type="datetime-local" v-model="form2nd.end" @change="checkTimeEnd()" :class="{'border-2 border-red-500' : form2nd.error.e_end}" class="input-memoAdd" size="30">
+                                        <span class="relative bottom-0 text-sm text-red-400">{{form2nd.error.e_end}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +79,7 @@
                              <div class="pt-5">
                                     <div class="relative">
                                         <p>IMAGE</p>
-                                        <input type="file" @input="" class="input-memoAdd" placeholder="1">
+                                        <input type="file" multiple @change="selectImages" class="input-memoAdd" accept="image/png, image/jpeg, image/webp" placeholder="1">
                                         <br>
                                     </div>
                                 </div>
@@ -106,7 +110,7 @@
                     <div class="w-full h-screen p-5 pt-10 mr-15">
                         <div class="mt-5 border border-black-500 overflow-auto rounded-lg shadow">
                             <table class="table-auto w-full">
-                                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                                <thead class="bg-brown-light border-b-2 border-gray-200 text-brown">
                                     <tr>
                                         <th>No.</th>
                                         <th class="w-24">Title</th>
@@ -120,16 +124,20 @@
                                 </thead>
                                 <tbody class="divide-y divide-grey-100">
                                     <template v-if="showData2nd != null">
-                                        <tr v-for="(item,index) in showData2nd">
+                                        <tr v-for="(item,index) in showData2nd" :key="index">
                                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                                 <a href="#" class="font-bold text-brown hover:underline ">{{index+1}}</a>
                                             </td>
-                                            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+                                            <td class="p-3 text-sm text-gray-700 whitespace-nowrap ">
                                                 {{item.title}}
                                             </td>
                                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                                <textarea class="cursor-default focus:outline-none resize-none" name="address" readonly id="" cols="26" rows="1">{{item.address}}
-                                                </textarea>
+                                                                                          <span v-if="item.address.replace(/\s/g, '').length">
+                                              <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="26" rows="1">{{item.address}}
+                                              </textarea>
+                                            </span>
+                                            <span v-else>-</span>
+
                                             </td>
                                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
                                                 <textarea class="cursor-default focus:outline-none resize-none" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
@@ -140,18 +148,8 @@
                                                 <span v-else>0 $</span>
                                             </td>
                                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap overflow-x-auto inline-flex gap-3">
-                                                <img
-                                                    src="https://media.timeout.com/images/101705309/image.jpg"
-                                                    width="100px"
-                                                    height="100px"
-                                                    alt=""
-                                                />  
-                                                <img
-                                                    src="https://media.timeout.com/images/101705309/image.jpg"
-                                                    width="100px"
-                                                    height="100px"
-                                                    alt=""
-                                                />
+                                                <img src="../assets/image/journii-logo.png" class="w-[50px] h-[50px]" alt="">
+                                                <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt="">
                                             </td>
                                             <td class="p-3 text-sm text-gray-700">
                                                 Start:
@@ -201,7 +199,7 @@
                     </div>
                     <div class="mt-5 border border-black-500 overflow-auto rounded-lg shadow">
                         <table class="table-auto w-full">
-                            <thead class="bg-gray-50 border-b-2 border-gray-200">
+                            <thead class="bg-brown-light border-b-2 border-gray-200 text-brown">
                                 <tr>
                                     <th class="">No.</th>
                                     <th class="w-24">Title</th>
@@ -214,21 +212,24 @@
                             </thead>
                             <tbody class="divide-y divide-grey-100">
                                 <template v-if="showData2nd != null">
-                                    <tr v-for="(item,index) in showData2nd">
+                                    <tr v-for="(item,index) in showData2nd" :key="index" class="bg-white">
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                             <a href="#" class="font-bold text-brown hover:underline ">{{index+1}}</a>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none" name="title" readonly id="" cols="15" rows="2">{{item.title}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="title" readonly id="" cols="15" rows="2">{{item.title}}
                                             </textarea>
                                         </td>
                                             
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none" name="address" readonly id="" cols="26" rows="1">{{item.address}}
-                                            </textarea>
+                                            <span v-if="item.address.replace(/\s/g, '').length">
+                                              <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="26" rows="1">{{item.address}}
+                                              </textarea>
+                                            </span>
+                                            <span v-else>-</span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
                                             </textarea>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
@@ -237,18 +238,8 @@
                                         </td>
                                         
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap overflow-x-auto inline-flex gap-3">
-                                            <img
-                                                src="https://media.timeout.com/images/101705309/image.jpg"
-                                                width="100px"
-                                                height="100px"
-                                                alt=""
-                                            />  
-                                            <img
-                                                src="https://media.timeout.com/images/101705309/image.jpg"
-                                                width="100px"
-                                                height="100px"
-                                                alt=""
-                                            />
+                                            <img src="../assets/image/journii-logo.png" class="w-[50px] h-[50px]" alt="">
+                                            <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt="">
                                         </td>
                                         <td class="p-3 text-sm text-gray-700">
                                             Start:
@@ -313,17 +304,13 @@ export default {
       },
       form2nd: {
         title: "",
-        address: {
-          v_street: "",
-          v_country: "",
-          v_province: "",
-          v_city: "",
-        },
+        street: "",
+        country: "",
+        province: "",
+        city: "",
         price: "",
-        time: {
-          v_start: "",
-          v_end: "",
-        },
+        start: "",
+        end: "",
         img: [],
         descript: "",
         isModalAdd: false,
@@ -331,6 +318,10 @@ export default {
         indexDelete: [],
         error: {
           e_title: "",
+          e_country: "",
+          e_price: "",
+          e_start: "",
+          e_end: "",
         },
       },
       data_length: 0,
@@ -339,6 +330,7 @@ export default {
       data_more: [],
     };
   },
+
   created() {
     let actionWindow =
       window.performance.getEntriesByType("navigation")[0].type;
@@ -372,13 +364,13 @@ export default {
   },
 
   methods: {
-    checkTitle() {
-      if (this.form1st.title === "" && this.checkEditForm.title == false) {
-        this.form1st.error.e_title = "กรุณากรอกชื่อหัวข้อ";
-        return;
-      }
-      this.form1st.error.e_title = "";
-    },
+    // checkTitle() {
+    //   if (this.form1st.title === "" && this.checkEditForm.title == false) {
+    //     this.form2nd.error.e_title = "กรุณากรอกชื่อหัวข้อ";
+    //     return;
+    //   }
+    //   this.form2nd.error.e_title = "";
+    // },
     checkTitle2ND() {
       if (this.form2nd.title === "") {
         this.form2nd.error.e_title = "กรุณากรอกชื่อหัวข้อ";
@@ -387,175 +379,84 @@ export default {
       this.form2nd.error.e_title = "";
     },
     checkCountry() {
-      if (this.form1st.country === "" && this.showForm1st.length == 0) {
-        this.form1st.error.e_country = "กรุณาเลือกประเทศ";
+      if (this.form2nd.country === "") {
+        this.form2nd.error.e_country = "กรุณาเลือกประเทศ";
         return;
       }
-      this.form1st.error.e_country = "";
-    },
-    checkPeople() {
-      if (
-        this.form1st.co_traveller === "" &&
-        this.checkEditForm.co_traveller == false
-      ) {
-        this.form1st.error.e_people = "กรุณาระบุจำนวนคน'";
-        return;
-      }
-      this.form1st.error.e_people = "";
+      this.form2nd.error.e_country = "";
     },
     checkPrice() {
-      if (this.form1st.price === "" && this.checkEditForm.price == false) {
-        this.form1st.error.e_price = "กรุณาระบุจำนวนค่าใช้จ่าย";
+      if (this.form2nd.price === "") {
+        this.form2nd.error.e_price = "กรุณาระบุจำนวนค่าใช้จ่าย";
         return;
       }
-      this.form1st.error.e_price = "";
+      this.form2nd.error.e_price = "";
     },
     checkTimeStart() {
       const today = new Date();
-      const start = new Date(this.form1st.start);
+      const start = new Date(this.form2nd.start);
       if (start > today) {
-        this.form1st.error.e_start = "ห้ามเป็นวันในอนาคต";
+        this.form2nd.error.e_start = "ห้ามเป็นวันในอนาคต";
         return;
       }
-      this.form1st.error.e_start = "";
+      this.form2nd.error.e_start = "";
 
-      if (this.form1st.start != "" && this.form1st.end == "") {
-        this.form1st.error.e_end = "กรุณากรอกวันสิ้นสุดการเดินทาง";
+      if (this.form2nd.start != "" && this.form2nd.end == "") {
+        this.form2nd.error.e_end = "กรุณากรอกวันสิ้นสุดการเดินทาง";
         return;
       }
 
-      if (this.form1st.start > this.form1st.end) {
-        this.form1st.error.e_start = "ข้อมูลวันที่ไม่สอดคล้องกัน";
-        this.form1st.error.e_end = "ข้อมูลวันที่ไม่สอดคล้องกัน";
+      if (this.form2nd.start > this.form2nd.end) {
+        this.form2nd.error.e_start = "ข้อมูลวันที่ไม่สอดคล้องกัน";
+        this.form2nd.error.e_end = "ข้อมูลวันที่ไม่สอดคล้องกัน";
         return;
-      } else if (this.form1st.start <= this.form1st.end) {
-        this.form1st.error.e_start = "";
-        this.form1st.error.e_end = "";
+      } else if (this.form2nd.start <= this.form2nd.end) {
+        this.form2nd.error.e_start = "";
+        this.form2nd.error.e_end = "";
       }
 
-      this.form1st.error.e_start = "";
+      this.form2nd.error.e_start = "";
     },
     checkTimeEnd() {
       const today = new Date();
-      const end = new Date(this.form1st.end);
+      const end = new Date(this.form2nd.end);
       if (end > today) {
-        this.form1st.error.e_end = "ห้ามเป็นวันในอนาคต";
+        this.form2nd.error.e_end = "ห้ามเป็นวันในอนาคต";
         return;
       }
-      this.form1st.error.e_end = "";
+      this.form2nd.error.e_end = "";
 
-      if (this.form1st.start == "" && this.form1st.end != "") {
-        this.form1st.error.e_start = "กรุณากรอกวันเริ่มต้นการเดินทาง";
+      if (this.form2nd.start == "" && this.form2nd.end != "") {
+        this.form2nd.error.e_start = "กรุณากรอกวันเริ่มต้นการเดินทาง";
         return;
       }
 
-      if (this.form1st.start > this.form1st.end) {
-        this.form1st.error.e_start = "ข้อมูลวันที่ไม่สอดคล้องกัน";
-        this.form1st.error.e_end = "ข้อมูลวันที่ไม่สอดคล้องกัน";
+      if (this.form2nd.start > this.form2nd.end) {
+        this.form2nd.error.e_start = "ข้อมูลวันที่ไม่สอดคล้องกัน";
+        this.form2nd.error.e_end = "ข้อมูลวันที่ไม่สอดคล้องกัน";
         return;
-      } else if (this.form1st.start <= this.form1st.end) {
-        this.form1st.error.e_start = "";
-        this.form1st.error.e_end = "";
+      } else if (this.form2nd.start <= this.form2nd.end) {
+        this.form2nd.error.e_start = "";
+        this.form2nd.error.e_end = "";
       }
 
-      this.form1st.error.e_end = "";
+      this.form2nd.error.e_end = "";
     },
-    submit() {
-      this.checkTitle();
+    
+    add2ND() {
+      this.checkTitle2ND();
       this.checkCountry();
-      this.checkPeople();
       this.checkPrice();
       this.checkTimeStart();
       this.checkTimeEnd();
 
       if (
-        this.form1st.error.e_title != "" ||
-        this.form1st.error.e_country != "" ||
-        this.form1st.error.e_people != "" ||
-        this.form1st.error.e_price != "" ||
-        this.form1st.error.e_start != "" ||
-        this.form1st.error.e_end != ""
+        this.form2nd.error.e_title != "" ||
+        this.form2nd.error.e_country != "" ||
+        this.form2nd.error.e_price != "" ||
+        this.form2nd.error.e_start != "" ||
+        this.form2nd.error.e_end != ""
       ) {
-        return;
-      }
-      console.log(this.form1st.isChange);
-      console.log(this.form1st.country);
-      if (this.data_main.length != 0 && this.form1st.isChange == true) {
-        Object.keys(this.form1st.isEdit).forEach((keys) => {
-          if (this.form1st.isEdit[keys] == true) {
-            this.form1st[keys] = this.showForm1st[0][keys];
-          }
-        });
-        if (
-          (this.showForm1st[0].country != "" ||
-            this.showForm1st[0].country != this.form1st.country) &&
-          this.form1st.country == ""
-        ) {
-          console.log("In");
-          this.form1st.country = this.showForm1st[0].country;
-        }
-
-        this.data_main.splice(0, 1);
-        this.pushData_main();
-      } else if (
-        this.showForm1st.length != 0 &&
-        this.form1st.isChange == false
-      ) {
-        if (
-          (this.showForm1st[0].country == "" ||
-            this.showForm1st[0].country != this.form1st.country) &&
-          this.form1st.country != ""
-        ) {
-          this.showForm1st[0].country = this.form1st.country;
-          localStorage.setItem("data", JSON.stringify(this.showForm1st));
-        }
-        return;
-      } else if (this.data_main.length == 0) {
-        this.pushData_main();
-      }
-      this.form1st.isChange = false;
-      localStorage.setItem("isEdit", JSON.stringify(this.form1st.isEdit));
-    },
-    pushData_main() {
-      this.data_main.push({
-        id: this.data_length + 1,
-        username: `Test${this.data_length + 1}`,
-        title: this.form1st.title,
-        st_address: this.form1st.st_address,
-        country: this.form1st.country,
-        province: this.form1st.province,
-        city: this.form1st.city,
-        start: this.form1st.start,
-        end: this.form1st.end,
-        co_traveller: this.form1st.co_traveller,
-        price: this.form1st.price,
-        descript: this.form1st.descript,
-        image: "",
-        favorite: 0,
-      });
-      Object.keys(this.form1st.isEdit).forEach((keys) => {
-        this.form1st.isEdit[keys] = true;
-      });
-      localStorage.setItem("data", JSON.stringify(this.data_main));
-    },
-    nextForm1st() {
-      this.submit();
-      if (
-        this.form1st.error.e_title != "" ||
-        this.form1st.error.e_country != "" ||
-        this.form1st.error.e_people != "" ||
-        this.form1st.error.e_price != "" ||
-        this.form1st.error.e_start != "" ||
-        this.form1st.error.e_end != ""
-      ) {
-        return;
-      }
-      this.$router.push({ name: "addJourni_2" });
-    },
-    add2ND() {
-      this.checkTitle2ND();
-
-      if (this.form1st.error.e_title != "") {
         return;
       }
 
@@ -563,19 +464,20 @@ export default {
         this.data_more.splice(0, 1);
       }
 
-      let address = `${this.form2nd.address.v_street} ${this.form2nd.address.v_province} ${this.form2nd.address.v_city} ${this.form2nd.address.v_country}`;
+      let address = `${this.form2nd.street} ${this.form2nd.province} ${this.form2nd.city} ${this.form2nd.country}`;
 
       this.data_more.push({
         main_id: this.data_length + 1,
         username: `Test`,
         title: this.form2nd.title,
         address: address,
-        start: this.form2nd.time.v_start,
-        end: this.form2nd.time.v_end,
+        start: this.form2nd.start,
+        end: this.form2nd.end,
         price: this.form2nd.price,
         descript: this.form2nd.descript,
         image: "",
       });
+      
       localStorage.setItem("data_more", JSON.stringify(this.data_more));
       this.form2nd.isModalAdd = false;
       this.changeOverflow();
@@ -609,8 +511,8 @@ export default {
     FirstPageForm(status) {
       this.$router.push({ name: "addJourni_1" });
 
-      console.log("Hello WOrld");
-      console.log(this.showForm1st.length);
+      // console.log("Hello WOrld");
+      // console.log(this.showForm1st.length);
       if (status == "Form_2&3" && this.showForm1st.length == 0) {
         alert("Please fill out the form!");
       } else {

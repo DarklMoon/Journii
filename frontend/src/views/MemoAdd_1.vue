@@ -84,7 +84,7 @@
                 <div class="pt-5">
                     <div class="relative">
                         <p>IMAGE</p>
-                        <input type="file" @input="" class="input-memoAdd" placeholder="1">
+                        <input type="file" multiple @change="selectImages" class="input-memoAdd" accept="image/png, image/jpeg, image/webp" placeholder="1">
                         <br>
                     </div>
                 </div>
@@ -167,6 +167,8 @@
       data_length_more: 0,
       data_main: [],
       data_more: [],
+      images: [], // array of image
+      imageErr: false,
     };
   },
   created() {
@@ -202,6 +204,19 @@
   },
 
   methods: {
+    selectImages(event) {
+      this.imageErr = false
+      this.images = event.target.files;
+      const fileSize = 1048576 
+      console.log(this.images)
+      for (let i = 0; i < this.images.length; i++) {
+        console.log(this.images[i].size)
+        if(this.images[i].size > fileSize){
+          this.deleteSelectImage(i)
+          this.imageErr = true
+        }
+      }
+    },
     checkTitle() {
       if (this.form1st.title === "" && this.checkEditForm.title == false) {
         this.form1st.error.e_title = "กรุณากรอกชื่อหัวข้อ";

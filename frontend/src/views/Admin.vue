@@ -46,7 +46,7 @@
     </div>
     <div v-show="changePage.allUser == true" class="p-10">
         <div class="w-full h-2/6 px-[1em] mt-5">
-            <input type="text" class="input-memoAdd w-1/4" placeholder="Search">
+            <input type="text" class="input-memoAdd w-1/4" v-model="name" placeholder="Search">
         </div>
         <div class="mt-5 border border-black-500 overflow-auto rounded-lg shadow ">
             <div class="table table-auto w-full">
@@ -248,16 +248,17 @@ export default {
         allAdmin: false,
       },
       user_data: [],
+      name:'',
       filter_name: [],
     }
   },
   created() {
-    const user = fetch("/src/assets/data/user.json").then((results) =>
+    fetch("/src/assets/data/user.json").then((results) =>
       results.json()
-    );
-    user.then((value) => {
+    ).then((value) => {
       this.user_data = value;
     });
+    
     console.log(this.user_data)
     
     this.changePage.allUser = true;
