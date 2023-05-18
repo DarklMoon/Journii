@@ -13,8 +13,8 @@
                         <div class="table-cell text-left table-TH">LASTNAME</div>
                         <div class="table-cell text-left table-TH">EMAIL</div>
                         <div class="table-cell text-left table-TH">GENDER</div>
-                        <div class="table-cell text-left table-TH">NUMBER OF LOGS</div>
-                        <div class="table-cell text-left table-TH">TOTAL REPORTS</div>
+                        <div class="table-cell text-center table-TH">NUMBER OF LOGS</div>
+                        <div class="table-cell text-center table-TH">TOTAL REPORTS</div>
                     </div>
                 </div>
                 <div class="table-row-group divide-y divide-grey-100">
@@ -37,10 +37,10 @@
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
                             <p>Female</p>
                         </div>
-                        <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
+                        <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                             <p>0</p>
                         </div>
-                        <div class="table-cell p-3 text-sm text-gray-700">
+                        <div class="table-cell p-3 text-sm text-gray-700 text-center">
                             <p>0</p>
                         </div>
                     </a>

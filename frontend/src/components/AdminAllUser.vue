@@ -14,35 +14,36 @@
                     <div class="table-cell text-left table-TH">LASTNAME</div>
                     <div class="table-cell text-left table-TH">EMAIL</div>
                     <div class="table-cell text-left table-TH">GENDER</div>
-                    <div class="table-cell text-left table-TH">NUMBER OF LOGS</div>
-                    <div class="table-cell text-left table-TH">TOTAL LIKES</div>
+                    <div class="table-cell text-center table-TH">NUMBER OF LOGS</div>
+                    <div class="table-cell text-center table-TH">TOTAL LIKES</div>
                 </div>
             </div>
-            <div class="table-row-group divide-y divide-grey-100">
+            <div class="table-row-group divide-y divide-grey-100" v-for="(item, index) in user_data" :key="index">
                 <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-brown-light" href="">
                     <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                        <p>1</p>
+                        <p>{{ item.user_id }}</p>
                     </div>
                     <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <p>username</p>
+                        <p>{{ item.username }}</p>
                     </div>           
                     <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <p>firstname</p>
+                        <p>{{ item.first_name }}</p>
                     </div>
                     <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <p>lastname</p>
+                        <p>{{ item.last_name }}</p>
                     </div>
                     <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <p>email@email.com</p>
+                        <p>{{ item.email }}</p>
                     </div>
                     <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <p>Female</p>
+                        <p>{{ item.gender}}</p>
                     </div>
-                    <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <p>0</p>
+                    <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                        <p>{{ item.numLogs }}</p>
                     </div>
-                    <div class="table-cell p-3 text-sm text-gray-700">
-                        <p>0</p>
+                    <div class="table-cell p-3 text-sm text-gray-700 text-center">
+                        <span v-if="!item.total_like">0</span>
+                        <p>{{ item.total_like }}</p>
                     </div>
                 </a>
             </div>
@@ -52,6 +53,7 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios'
 export default {
     
   data() {
@@ -62,13 +64,20 @@ export default {
     }
   },
   created() {
-    
+    axios.get("/admin/allUser")
+        .then((response) => {
+          this.user_data = response.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        console.log(this.user_data)
+        
   },
   methods: {
     
   },
   computed: {
-
   },
   watch: {
     name(newVal) {
