@@ -2,7 +2,6 @@
   <div>
     <div class="w-full h-2/6 px-[1em] mt-5">
             <input type="text" class="input-memoAdd w-1/4" v-model="name" placeholder="Search">
-            <p>{{ name }}</p>
     </div>
     <div class="mt-5 border border-black-500 overflow-auto rounded-lg shadow ">
         <div class="table table-auto w-full">
@@ -66,12 +65,14 @@ export default {
   created() {
     axios.get("/admin/allUser")
         .then((response) => {
+            console.log(response.data.length)
           this.user_data = response.data;
+          localStorage.setItem('numOfAllUser', JSON.stringify(response.data.length))
         })
         .catch((err) => {
           console.log(err);
         });
-        console.log(this.user_data)
+
         
   },
   methods: {

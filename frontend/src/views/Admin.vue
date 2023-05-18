@@ -10,7 +10,7 @@
                 </div>
                 <div class="w-3/4 p-2">
                     <p>All Journii Users</p>
-                    <p class="text-sm">0</p>
+                    <p class="text-sm">{{ numOfAllUser }}</p>
                 </div>
             </div>
             <div @click="[changePage.allUser = false, changePage.allLogs = false, changePage.allReports = false, changePage.allAdmin = true]" 
@@ -82,6 +82,7 @@ export default {
         allLogs: false,
         allReports: false,
       },
+      numOfAllUser: 0
     }
   },
   created() {
@@ -90,6 +91,11 @@ export default {
         this.changePage = getPage
     }
     window.addEventListener('beforeunload', this.isReload)
+
+    var getNumOfAllUser = JSON.parse(localStorage.getItem('numOfAllUser'));
+    if(getNumOfAllUser){
+        this.numOfAllUser = getNumOfAllUser;
+    }
     
   },
   methods: {
