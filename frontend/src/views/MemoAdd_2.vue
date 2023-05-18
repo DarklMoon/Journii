@@ -1,5 +1,6 @@
 <template>
-    <div class="flex">
+    <div class="flex overflow-visible" style="background: rgb(227,232,233);
+background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 75%, rgba(81,63,63,1) 75%);">
         <template v-if="form2nd.isModalAdd == true">
             <div class="modalAdd">
                 <div class="modal-content">
@@ -272,7 +273,7 @@
                 
         </div>
         <!-- Right Menubar  -->
-        <div class="flex flex-col justify-center items-center w-1/4 pb-1/2  bg-brown gap-10">
+        <div class="flex flex-col justify-center items-center w-1/4 h-3/4 pb-1/2 gap-10">
             <button class="list-form-btn" @click="FirstPageForm('From_23')">
                 <div class="text-white ">บันทึกเบื้องต้น</div>
             </button>
