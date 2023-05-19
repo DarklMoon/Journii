@@ -9,35 +9,42 @@
                     <div class="table-row">
                         <div class="text-center table-TH">LOG_ID</div>
                         <div class="table-cell text-left table-TH">USERNAME</div>
-                        <div class="table-cell text-left table-TH">NAME</div>
+                        <div class="table-cell text-left table-TH">FIRSTNAME</div>
+                        <div class="table-cell text-left table-TH">LASTNAME</div>
                         <div class="table-cell text-left table-TH">ROLE</div>
                         <div class="table-cell text-left table-TH">ACTION</div>
                         <div class="table-cell text-left table-TH">DATE</div>
                         <div class="table-cell text-left table-TH">TIME</div>
                     </div>
                 </div>
-                <div class="table-row-group divide-y divide-grey-100">
+                <div class="table-row-group divide-y divide-grey-100" v-for="(item, index) in log_data" :key="index">
                     <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-brown-light" href="">
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                            <p>1</p>
+                            <p>{{ item.log_id }}</p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                            <p>username</p>
+                            <p>{{ item.username }}</p>
                         </div>    
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                            <p>firstname lastname</p>
+                            <p>{{ item.first_name }}</p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                            <p>User</p>
+                            <p>{{ item.last_name}}</p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                            <p>Update Journi</p>
+                            <p>{{ item.role }} </p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                            <p>20 Mar 2022</p>
+                            <p>{{ item.log_action }}</p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
-                            <p>23:30:23</p>
+                            <p>{{ changeDate(item.date) }}
+                                <br>{{ item.date }}
+                            </p>
+                            <p></p>
+                        </div>
+                        <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
+                            <p>{{ item.time }}</p>
                         </div>
                     </a>
                 </div>
@@ -47,23 +54,34 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios'
 export default {
     
   data() {
     return{
-      user_data: [],
+      log_data: [],
       name:'',
       filter_name: [],
     }
   },
   created() {
-    
+    axios.get("/admin/allLogs")
+        .then((response) => {
+          this.log_data = response.data;
+          localStorage.setItem('numOfAllLogs', JSON.stringify(response.data.length))
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   },
   methods: {
-    
+    changeDate(date){
+        let newDate = new Date(date)
+        return newDate.toDateString();
+    }
   },
   computed: {
-
+    
   },
   watch: {
     name(newVal) {

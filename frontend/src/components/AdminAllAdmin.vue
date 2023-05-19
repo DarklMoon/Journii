@@ -51,11 +51,12 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios'
 export default {
     
   data() {
     return{
-      user_data: [],
+      admin_data: [],
       name:'',
       filter_name: [],
     }
