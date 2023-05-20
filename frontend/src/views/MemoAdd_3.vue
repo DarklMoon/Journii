@@ -1,5 +1,6 @@
 <template>
-    <div class="flex">
+    <div class="flex overflow-auto" style="background: rgb(227,232,233);
+background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 75%, rgba(81,63,63,1) 75%);">
         <div class="grow flex flex-col justify-start items-center">
             <h1 class="text-2xl font-medium mt-10">สรุปบันทึก</h1>
             <div class="w-4/5 h-screen p-5 pt-10">
@@ -205,7 +206,10 @@ export default {
               localStorage.removeItem("data");
               localStorage.removeItem("data_more");
               localStorage.removeItem("isEdit");
+
+              
               this.$router.push({ name: "list" });
+
             }
         },
         FirstPageForm(status) {
