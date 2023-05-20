@@ -7,18 +7,21 @@
                     <h2 class="text-center text-4xl">Log in</h2>
                     <div class="inputbox relative mx-30 w-310 pt-6 pb-1">
                         <ion-icon class="absolute right-0 " name="mail-outline"></ion-icon>
-                        <input class="w-full h-50 bg-transparent" type="email" placeholder="Email" v-model='get_in.email'
+                        <input class="w-full h-50 bg-transparent" type="email" placeholder="Email" v-model='email'
                             required>
                     </div>
                     <div class="inputbox relative mx-30 w-310 pt-6 pb-1">
                         <ion-icon class="absolute right-0" name="lock-closed-outline"></ion-icon>
                         <input class="w-full h-50 bg-transparent" type="password" placeholder="Password"
-                            v-model='get_in.pass' required>
+                            v-model='password' required>
                     </div>
-                    <button type="button" class="mt-5 mb-2 rounded-2xl w-full h-8 text-black bg-white transition duration-100 ease-in-out hover:bg-neutral-300" @click="Login()">Log
+                    <button type="button"
+                        class="mt-5 mb-2 rounded-2xl w-full h-8 text-black bg-white transition duration-100 ease-in-out hover:bg-neutral-300"
+                        @click="Login()">Log
                         in</button>
                     <div class="register">
-                        <p>Don't have an account? <router-link :to="{ name: 'signup' }" class="hover:text-neutral-300">Sign Up</router-link>
+                        <p>Don't have an account? <router-link :to="{ name: 'signup' }" class="hover:text-neutral-300">Sign
+                                Up</router-link>
                         </p>
                     </div>
                 </form>
@@ -30,35 +33,36 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios.js'
 export default {
     name: 'Signin',
     data() {
         return {
-            get_user: [],
-            get_in: {
-                email: '',
-                pass: ''
-            }
+            email:'',
+            password:''
         }
 
     },
     methods: {
-        GoSignup() {
-            window.location.href = "SignUp.html";
-        },
         Login() {
-            this.get_user = JSON.parse(localStorage.getItem('User'))
-            // let get_user = localStorage.getItem('User')
-            // console.log(this.get_user)
-            for (let index = 0; index < this.get_user.length; index++) {
-                const element = this.get_user[index];
-                // console.log(element)
-                if ((element.email == this.get_in.email) && (element.password == this.get_in.pass)) {
-                    console.log('yes')
-                    localStorage.setItem('User_in', JSON.stringify(element))
-
-                }
+            const data = {
+                email: this.email,
+                password: this.password
             }
+
+            axios.post('/user/login', data)
+                .then(res => {
+                    // const token = res.data.token
+                    // localStorage.setItem('token', token)
+                    // this.$emit('auth-change')
+                    // this.$router.push({ path: '/' })
+                    // console.log(res.data)
+                    console.log('test')
+                })
+                .catch(error => {
+                    this.error = error.response.data
+                    console.log(error.response.data)
+                })
         }
     }
 }
