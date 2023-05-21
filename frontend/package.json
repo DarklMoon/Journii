@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ionic/vue": "^7.0.7",
     "@vuelidate/core": "^2.0.2",
     "@vuelidate/validators": "^2.0.2",
     "axios": "^1.4.0",

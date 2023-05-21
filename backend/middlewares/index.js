@@ -30,12 +30,13 @@ async function isLoggedIn(req, res, next) {
 
   // Set user
   const [users] = await pool.query(
-    "SELECT user_id, username, first_name, last_name, email, role " +
-      "FROM user WHERE user_id = ?",
+    "SELECT `user_id`, `username`, `first_name`, `last_name`, `email`, `role`\
+    FROM `USER` WHERE `user_id` = ?",
     [token.user_id]
   );
   //set เข้าไปใน req.
   req.user = users[0]; //ทุก route ต่อจากนี้ จะสามารถเข้าถึงข้อมูล user ได้หมด ไม่ต้อง querry ใหม่ทุกครั้ง
+  console.log(req.user)
 
   next();
 }

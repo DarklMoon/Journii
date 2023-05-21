@@ -86,7 +86,7 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                 <div class="pt-5">
                     <div class="relative">
                         <p>IMAGE</p>
-                        <input type="file" multiple @change="selectImages" class="input-memoAdd" accept="image/png, image/jpeg, image/webp" placeholder="1">
+                        <input type="file" multiple @change="selectImages" name="imageMemo" class="input-memoAdd" accept="image/png, image/jpeg, image/webp" placeholder="1">
                         <br>
                     </div>
 
@@ -119,8 +119,8 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                 <div class="flex justify-around pb-5">
                     <button class="m-1 text-[1.3vw] mt-5 w-1/6 h-8 bg-green rounded-md hover:text-white">Save
                     </button>
-                    <a href="#more"  @click="nextForm1st()" class="m-1 text-[1.3vw] mt-5 w-1/6 h-8 bg-green rounded-md hover:text-white text-center">Next
-                    </a>
+                    <button href="#more"  @click="nextForm1st()" class="m-1 text-[1.3vw] mt-5 w-1/6 h-8 bg-green rounded-md hover:text-white text-center">Next
+                    </button>
                 </div>
             </form>
           </div>
@@ -222,7 +222,7 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                         </button>
                                       </div>
                                     </div>
-                                    </div>
+                                  </div>
                               </div>
                             <hr class="mt-5">
 
@@ -264,8 +264,8 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-grey-100">
-                                    <template v-if="showData2nd != null">
-                                        <tr v-for="(item,index) in showData2nd" :key="index">
+                                    <template v-if="data_more != null">
+                                        <tr v-for="(item,index) in data_more" :key="index">
                                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                                 <a href="#" class="font-bold text-brown hover:underline ">{{index+1}}</a>
                                             </td>
@@ -289,8 +289,9 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                                 <span v-else>0 $</span>
                                             </td>
                                             <td class="p-3 text-sm text-gray-700 whitespace-nowrap overflow-x-auto inline-flex gap-3">
-                                                <img src="../assets/image/journii-logo.png" class="w-[50px] h-[50px]" alt="">
-                                                <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt="">
+                                                <span v-for="(image, index) in item.image" :key="index">
+                                                  <img :src="showSelectImage(image)" class="w-[50px] h-[50px]" alt="picture_more">
+                                                </span>
                                             </td>
                                             <td class="p-3 text-sm text-gray-700">
                                                 Start:
@@ -342,8 +343,8 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                             <thead class="bg-brown-light border-b-2 border-gray-200 text-brown">
                                 <tr>
                                     <th class="">No.</th>
-                                    <th class="w-24">Title</th>
-                                    <th class="w-24 ">Address</th>
+                                    <th class="">Title</th>
+                                    <th class="w-16 ">Address</th>
                                     <th class="w-24 ">Description</th>
                                     <th class="">Price</th>
                                     <th class="w-32 ">Image</th>
@@ -351,19 +352,19 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-grey-100">
-                                <template v-if="showData2nd != null">
-                                    <tr v-for="(item,index) in showData2nd" :key="index" class="bg-white">
+                                <template v-if="data_more.length != 0">
+                                    <tr v-for="(item,index) in data_more" :key="index" class="bg-white">
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                             <a href="#" class="font-bold text-brown hover:underline ">{{index+1}}</a>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="title" readonly id="" cols="15" rows="2">{{item.title}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="title" readonly id="" cols="7" rows="2">{{item.title}}
                                             </textarea>
                                         </td>
                                             
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
                                             <span v-if="item.address.replace(/\s/g, '').length">
-                                              <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="26" rows="1">{{item.address}}
+                                              <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="16" rows="1">{{item.address}}
                                               </textarea>
                                             </span>
                                             <span v-else>-</span>
@@ -379,10 +380,14 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                             <span v-if="item.price != '' ">{{item.price}} $</span>
                                             <span v-else>0 $</span>
                                         </td>
-                                        
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap overflow-x-auto inline-flex gap-3">
-                                            <img src="../assets/image/journii-logo.png" class="w-[50px] h-[50px]" alt="">
-                                            <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt="">
+                                          <!-- <img src="../assets/image/journii-logo.png" class="w-[50px] h-[50px]" alt="">
+                                          <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt="">
+                                          <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt="">
+                                          <img src="https://media.timeout.com/images/101705309/image.jpg" class="w-[50px] h-[50px]" alt=""> -->
+                                          <span v-for="(image, index) in item.image" :key="index" class="overflow-x-auto">
+                                            <img :src="showSelectImage(image)" class="w-[50px] h-[50px]" alt="picture_more">
+                                          </span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700">
                                             Start:
@@ -403,12 +408,16 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                         </td>
                                     </tr>
                                 </template>
-                                
+                                <template v-else>
+                                    <tr>
+                                        <td colspan="7" class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">ไม่พบข้อมูล</td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </div>
                     <div class="flex justify-around">
-                        <a href="#normal"  @click="pageNow = 'main'" class="m-1 text-[1.3vw] mt-5 w-1/6 h-8 bg-green rounded-md hover:text-white text-center">Back</a>
+                        <button href="#normal"  @click="pageNow = 'main'" class="m-1 text-[1.3vw] mt-5 w-1/6 h-8 bg-green rounded-md hover:text-white text-center">Back</button>
                         <button @click="ThirdPageForm()" class="m-1 text-[1.3vw] mt-5 w-1/6 h-8 bg-green rounded-md hover:text-white">Next</button>
                     </div>
           </div>
@@ -418,9 +427,9 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
             <h1 class="text-2xl font-medium mt-10">สรุปบันทึก</h1>
             <div class="w-4/5 h-screen p-5 pt-10">
                 <div class="flex flex-col justify-center items-center pt-3">
-                    <div class='w-[50vw] h-[70vh] border-2 border-[#513F3F]  rounded-md p-4 bg-white'>
+                    <div class='w-[50vw]  border-2 border-[#513F3F]  rounded-md p-4 bg-white'>
                         <template v-if="showForm1st[0] != null">
-                            <div v-for="(item, index) in showForm1st" :key="index">
+                            <div v-for="(item, index) in data_main" :key="index">
                                 <h1 class="text-xl">{{item.title}}</h1>
                                 <hr class="w-1/2 h-[2px] border-none bg-gray-400">
                                 <div class="grid grid-cols-2 mt-3">
@@ -499,6 +508,21 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                         </p>
                                     </h1> 
                                 </div>
+                                <div v-if="images.length !== 0">
+                                  <hr class="mt-3">
+                                  <div class="mt-3">
+                                    <h1>IMAGE :</h1>
+                                      <div class="flex">
+                                        <div v-for="(image, index) in images" :key="index">
+                                          <div class="mt-3 mx-1">
+                                          <figure>
+                                            <img :src="showSelectImage(image)" class="w-[100px] h-[100px]" alt="picture">
+                                          </figure>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                             </div>
                         </template>
                         <template v-else>
@@ -511,8 +535,8 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                             <thead class="bg-brown-light border-b-2 border-gray-200 text-brown">
                                 <tr>
                                     <th class="">No.</th>
-                                    <th class="w-24">Title</th>
-                                    <th class="w-24 ">Address</th>
+                                    <th class="">Title</th>
+                                    <th class="w-16 ">Address</th>
                                     <th class="w-24 ">Description</th>
                                     <th class="">Price</th>
                                     <th class="w-32 ">Image</th>
@@ -520,40 +544,34 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-grey-100 bg-white">
-                                <template v-if="showData2nd.length != 0">
-                                    <tr v-for="(item,index) in showData2nd" :key="index" >
+                                <template v-if="data_more.length != 0">
+                                    <tr v-for="(item,index) in data_more" :key="index" >
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                             <a href="#" class="font-bold text-brown hover:underline ">{{index+1}}</a>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="title" readonly id="" cols="15" rows="2">{{item.title}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="title" readonly id="" cols="7" rows="2">{{item.title}}
                                             </textarea>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="26" rows="1">{{item.address}}
+                                            <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="address" readonly id="" cols="16" rows="1">{{item.address}}
                                             </textarea>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+                                          <span v-if="item.descript == ''">-</span>
+                                          <span v-else>
                                             <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
                                             </textarea>
+                                          </span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
                                             <span v-if="item.price != '' ">{{item.price}} $</span>
                                             <span v-else>0 $</span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap overflow-x-auto inline-flex gap-3">
-                                            <img
-                                                src="https://media.timeout.com/images/101705309/image.jpg"
-                                                width="100px"
-                                                height="100px"
-                                                alt=""
-                                            />  
-                                            <img
-                                                src="https://media.timeout.com/images/101705309/image.jpg"
-                                                width="100px"
-                                                height="100px"
-                                                alt=""
-                                            />
+                                            <span v-for="(image, index) in item.image" :key="index">
+                                            <img :src="showSelectImage(image)" class="w-[50px] h-[50px]" alt="picture_more">
+                                          </span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700">
                                             Start:
@@ -593,17 +611,17 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
         <!-- List Form Button  -->     
         <div class="flex flex-col justify-center items-center w-1/4 pb-1/2 gap-10 ">
           <div class="fixed w-1/4">
-                <a href="#normal" @click="FirstPageForm()" class="list-form-btn ">
+                <button href="#normal" @click="FirstPageForm()" class="list-form-btn ">
                     <div class="text-white ">บันทึกเบื้องต้น</div>
-                </a>
+                </button>
 
-                <a href="#more" @click="SecondForm()" class="list-form-btn">
+                <button href="#more" @click="SecondForm()" class="list-form-btn">
                     <div class="text-white">บันทึกลงรายละเอียด</div>
-                </a>
+                </button>
 
-                <a href="#sum" class="list-form-btn" @click="ThirdPageForm()">
+                <button href="#sum" class="list-form-btn" @click="ThirdPageForm()">
                   <div class="text-white">สรุป</div>
-                </a>
+                </button>
           </div>
         </div>
     </div>
@@ -718,14 +736,19 @@ import axios from '@/plugins/axios'
       });
       localStorage.setItem("isEdit", JSON.stringify(this.form1st.isEdit));
     }
-    console.log("Fetch Json File");
+    console.log("Created!");
+
+    window.addEventListener('beforeunload', this.isReload)
   },
 
   methods: {
+    isReload(){
+      this.showSelectImage('reload')
+    },
     selectImages(event) {
       this.imageErr = false
       this.images = event.target.files;
-      const fileSize = 1048576 
+      const fileSize = 	3145728 //LIMIT 3 MB
       for (let i = 0; i < this.images.length; i++) {
         console.log(this.images[i].size)
         if(this.images[i].size > fileSize){
@@ -737,9 +760,9 @@ import axios from '@/plugins/axios'
     selectImagesMore(event) {
       this.image_moreErr = false
       this.images_more = event.target.files;
-      const fileSize = 1048576 
+      const fileSize = 2097152 //LIMIT 2 MB
       for (let i = 0; i < this.images_more.length; i++) {
-        console.log(this.images_more[i].size)
+        // console.log(this.images_more[i].size)
         if(this.images_more[i].size > fileSize){
           this.deleteSelectImageMore(i)
           this.image_moreErr = true
@@ -747,6 +770,9 @@ import axios from '@/plugins/axios'
       }
     },
     showSelectImage(image) {
+      if(image === 'reload'){
+        return 0
+      }
       return URL.createObjectURL(image);
     },
     deleteSelectImage(index) {
@@ -866,8 +892,8 @@ import axios from '@/plugins/axios'
       ) {
         return;
       }
-      console.log(this.form1st.isChange);
-      console.log(this.form1st.country);
+      // console.log(this.form1st.isChange);
+      // console.log(this.form1st.country);
       if (this.data_main.length != 0 && this.form1st.isChange == true) {
         Object.keys(this.form1st.isEdit).forEach((keys) => {
           if (this.form1st.isEdit[keys] == true) {
@@ -879,7 +905,6 @@ import axios from '@/plugins/axios'
             this.showForm1st[0].country != this.form1st.country) &&
           this.form1st.country == ""
         ) {
-          console.log("In");
           this.form1st.country = this.showForm1st[0].country;
         }
 
@@ -906,8 +931,6 @@ import axios from '@/plugins/axios'
     },
     pushData_main() {
       this.data_main.push({
-        id: this.data_length + 1,
-        username: `Test${this.data_length + 1}`,
         title: this.form1st.title,
         st_address: this.form1st.st_address,
         country: this.form1st.country,
@@ -918,13 +941,13 @@ import axios from '@/plugins/axios'
         co_traveller: this.form1st.co_traveller,
         price: this.form1st.price,
         descript: this.form1st.descript,
-        image: "",
         favorite: 0,
       });
       Object.keys(this.form1st.isEdit).forEach((keys) => {
         this.form1st.isEdit[keys] = true;
       });
       localStorage.setItem("data", JSON.stringify(this.data_main));
+      console.log(this.data_main)
     },
     nextForm1st() {
       this.submit();
@@ -972,12 +995,52 @@ import axios from '@/plugins/axios'
       }
     },
     submitAll() {
+      console.log(this.showForm1st)
       if (confirm("Do you want to submit it?")) {
+        let formData = new FormData();
+        formData.append("title", this.showForm1st[0].title);
+        formData.append("st_address", this.showForm1st[0].st_address);
+        formData.append("country", this.showForm1st[0].country);
+        formData.append("province", this.showForm1st[0].province);
+        formData.append("city", this.showForm1st[0].city);
+        formData.append("start", this.showForm1st[0].start);
+        formData.append("end", this.showForm1st[0].end);
+        formData.append("co_travel", this.showForm1st[0].co_traveller);
+        formData.append("price", this.showForm1st[0].price);
+        formData.append("descript", this.showForm1st[0].descript);
+        for (let i = 0; i < this.images.length; i++) {
+          const value = this.images[i];
+          formData.append("imageMemo", value)
+        }
+
+        axios.post("/memoes/main", formData).then((res) => {
+          console.log(res.data)
+          this.$router.push({name: 'list'})
+        }).catch((e) => console.log(e.response.data));
+        // if(this.data_more.length !== 0){
+        //   formData.append("title", this.showForm1st[0].title);
+        //   formData.append("st_address", this.showForm1st[0].st_address);
+        //   formData.append("country", this.showForm1st[0].country);
+        //   formData.append("province", this.showForm1st[0].province);
+        //   formData.append("city", this.showForm1st[0].city);
+        //   formData.append("start", this.showForm1st[0].start);
+        //   formData.append("end", this.showForm1st[0].end);
+        //   formData.append("co_travel", this.showForm1st[0].co_traveller);
+        //   formData.append("price", this.showForm1st[0].price);
+        //   formData.append("descript", this.showForm1st[0].descript);
+        // for (let i = 0; i < this.images_more.length; i++) {
+        //   const value = this.images_more[i];
+        //   formData.append("imageMemoM", value)
+        // }
+        // }
+        // this.images.forEach(image => {
+        //   formData.append("imageMemo", image);
+        // });
+
         alert("Data is added successfully!");
         localStorage.removeItem("data");
-        localStorage.removeItem("data_more");
         localStorage.removeItem("isEdit");
-        this.$router.push({ name: "list" });
+
       }
     },
     onFocus(e, msg) {
@@ -1104,10 +1167,19 @@ import axios from '@/plugins/axios'
         end: this.form2nd.end,
         price: this.form2nd.price,
         descript: this.form2nd.descript,
-        image: "",
+        image: this.images_more,
       });
-      
-      localStorage.setItem("data_more", JSON.stringify(this.data_more));
+
+      this.form2nd.title = ''
+      this.form2nd.street = ''
+      this.form2nd.province = ''
+      this.form2nd.city = ''
+      this.form2nd.country = ''
+      this.form2nd.start = ''
+      this.form2nd.price = ''
+      this.form2nd.descript = ''
+      this.images_more = ''
+
       this.form2nd.isModalAdd = false;
       this.changeOverflow();
     },
@@ -1121,7 +1193,7 @@ import axios from '@/plugins/axios'
       }
     },
     submitDelete(bool) {
-      console.log(this.form2nd.indexDelete.length);
+      // console.log(this.form2nd.indexDelete.length);
       if (bool == true && this.form2nd.indexDelete.length != 0) {
         let i = 0;
         let sortDESC = this.form2nd.indexDelete.sort().reverse();
@@ -1129,8 +1201,8 @@ import axios from '@/plugins/axios'
           this.data_more.splice(sortDESC[i], 1);
           i++;
         }
-        localStorage.removeItem("data_more");
-        localStorage.setItem("data_more", JSON.stringify(this.data_more));
+        // localStorage.removeItem("data_more");
+        // localStorage.setItem("data_more", JSON.stringify(this.data_more));
       }
       this.form2nd.indexDelete = [];
       this.form2nd.isModalDelete = false;
@@ -1145,14 +1217,14 @@ import axios from '@/plugins/axios'
       }
       return this.data_main;
     },
-    showData2nd() {
-      let getItem = JSON.parse(localStorage.getItem("data_more"));
-      if (getItem != null) {
-        this.data_more = getItem;
-      }
-      console.log(this.data_more);
-      return this.data_more;
-    },
+    // data_more() {
+    //   let getItem = JSON.parse(localStorage.getItem("data_more"));
+    //   if (getItem != null) {
+    //     this.data_more = getItem;
+    //   }
+    //   console.log(this.data_more); 
+    //   return this.data_more;
+    // },
     checkEditForm() {
       let getItem = JSON.parse(localStorage.getItem("isEdit"));
       if (getItem != null) {
