@@ -20,14 +20,25 @@
           <!-- <p class="px-2">{{ this.$route.path }}</p> this.$route.path === '/memo/addJourni/first' -->
         </div>
         <div class="flex w-1/2 justify-end">
-          <div v-if='user'>
+          <div v-if="user && user.role == 'Admin'">
+            <button @click="logout()" class="pr-3 hover:text-white transition ease-in-out delay-10">Sign Out</button>
+            <button type="button"
+              class="px-4 py-2 mr-2 bg-brown-light text-brown rounded-md hover:text-white hover:bg-[#513f3f] transition ease-in-out delay-10 " >
+              <router-link :to="{ name: 'admin' }" :class="{ 'text-white': this.$route.path === '/admin' }" >Admin</router-link>
+            </button>
+            <button type="button"
+              class="px-4 py-2 bg-brown-light text-brown rounded-md hover:text-white hover:bg-[#513f3f] transition ease-in-out delay-10 " >
+              <router-link :to="{ name: 'account' }" :class="{ 'text-white': this.$route.path === '/user/me' }" >{{ user.username }}</router-link>
+            </button>
+          </div>
+          <div v-if="user && user.role == 'Normal'">
             <button @click="logout()" class="pr-3 hover:text-white transition ease-in-out delay-10">Sign Out</button>
             <button type="button"
               class="px-4 py-2 bg-brown-light text-brown rounded-md hover:text-white hover:bg-[#513f3f] transition ease-in-out delay-10 " >
               <router-link :to="{ name: 'account' }" :class="{ 'text-white': this.$route.path === '/user/me' }" >{{ user.username }}</router-link>
             </button>
           </div>
-          <div v-else>
+          <div v-else-if="!user">
             <button class="pr-3 hover:text-white transition ease-in-out delay-10">
               <router-link :to="{ name: 'signin' }" :class="{ 'text-white': this.$route.path === '/user/signin' }">Sign
                 in</router-link>
@@ -37,6 +48,7 @@
               <router-link :to="{ name: 'signup' }" :class="{ 'text-white': this.$route.path === '/user/signup' }" >Sign up</router-link>
             </button>
           </div>
+
         </div>
       </div>
     </nav>
@@ -52,11 +64,13 @@ import { RouterView } from 'vue-router'
 <script>
 import axios from '@/plugins/axios'
 export default {
+  
   data() {
     return {
       user: null
     }
   },
+    // props: ['user'],
   methods: {
     onAuthChange() {
       const token = localStorage.getItem('token')

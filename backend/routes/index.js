@@ -6,7 +6,7 @@ router = express.Router();
 router.get("/", async function (req, res, next) {
     try {
         // const search = req.query.search || ''
-        let sql = "SELECT jour_id,jour_title, jour_script, DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e`, jour_like, total_price, city, state_province, country  FROM journey JOIN location USING (location_id)"
+        let sql = "SELECT *, DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e`  FROM journey JOIN location USING (location_id)"
         // let cond = []
     
         // if (search.length > 0) {
