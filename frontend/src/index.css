@@ -22,7 +22,10 @@
         @apply absolute right-[5em] top-[50%] -translate-y-1/2 px-2 py-1 rounded-md
     }
     .list-form-btn{
-        @apply text-xl w-1/2 h-[10%] bg-pink rounded-md flex justify-center items-center
+        @apply text-xl w-2/3 h-[10%] bg-pink rounded-md flex justify-center items-center p-4 m-[20%]
+    }
+    .setup-memoAdd{
+        @apply flex flex-col justify-start items-center w-full
     }
     .input-memoAdd{
         @apply text-lg p-1 truncate border-2 border-gray-400 rounded-md
@@ -34,6 +37,9 @@
         background-color: #BCA88E;
         @apply 
     } */
+    .btn-img{
+
+    }
 }
 
 @layer utilities{

@@ -26,7 +26,7 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                         <select @change="checkCountry()" :class="{'border-2 border-red-500' : form2nd.error.e_country}" name="country" v-model="form2nd.country" class="input-memoAdd" >
                                             <!-- <option disabled selected value="">Please select country</option> -->
                                             <option disabled selected value="" >Please select country</option>
-                                            <option v-for="(item, index) in form1st.country_list" :key="index" :value="item">{{item}}</option>
+                                            <option v-for="(item, index) in form2nd.country_list" :key="index" :value="item">{{item}}</option>
                                         </select><br>
                                         <span class="relative bottom-0 text-sm text-red-400">{{form2nd.error.e_country}}</span>
                                     </div>
@@ -230,8 +230,11 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                             <span v-else>-</span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+                                          <span v-if="item.descript == ''">-</span>
+                                          <span v-else>
                                             <textarea class="cursor-default focus:outline-none resize-none bg-transparent" name="detail" readonly id="" cols="26" rows="1">{{item.descript}}
                                             </textarea>
+                                          </span>
                                         </td>
                                         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
                                             <span v-if="item.price != '' ">{{item.price}} $</span>
@@ -300,10 +303,8 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
 export default {
   data() {
     return {
-      form1st: {
-        country_list: [],
-      },
       form2nd: {
+        country_list: [],
         title: "",
         street: "",
         country: "",
@@ -341,7 +342,7 @@ export default {
       results.json()
     );
     country.then((value) => {
-      this.form1st.country_list = value.countrys;
+      this.form2nd.country_list = value.countrys;
     });
 
     const dataJson = fetch("/src/assets/data/memo.json").then((results) =>
@@ -379,21 +380,21 @@ export default {
       }
       this.form2nd.error.e_title = "";
     },
-    checkCountry() {
+    checkCountry2ND() {
       if (this.form2nd.country === "") {
         this.form2nd.error.e_country = "กรุณาเลือกประเทศ";
         return;
       }
       this.form2nd.error.e_country = "";
     },
-    checkPrice() {
+    checkPrice2ND() {
       if (this.form2nd.price === "") {
         this.form2nd.error.e_price = "กรุณาระบุจำนวนค่าใช้จ่าย";
         return;
       }
       this.form2nd.error.e_price = "";
     },
-    checkTimeStart() {
+    checkTimeStart2ND() {
       const today = new Date();
       const start = new Date(this.form2nd.start);
       if (start > today) {
@@ -418,7 +419,7 @@ export default {
 
       this.form2nd.error.e_start = "";
     },
-    checkTimeEnd() {
+    checkTimeEnd2ND() {
       const today = new Date();
       const end = new Date(this.form2nd.end);
       if (end > today) {

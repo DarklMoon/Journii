@@ -24,19 +24,9 @@ const routes = [
     component: () => import("@/views/MemoList.vue"),
   },
   {
-    path: "/memo/addJourni/first",
+    path: "/memo/addJourni/",
     name: "addJourni_1",
     component: () => import("@/views/MemoAdd_1.vue"),
-  },
-  {
-    path: "/memo/addJourni/second",
-    name: "addJourni_2",
-    component: () => import("@/views/MemoAdd_2.vue"),
-  },
-  {
-    path: "/memo/addJourni/thrid",
-    name: "addJourni_3",
-    component: () => import("@/views/MemoAdd_3.vue"),
   },
 
   {
