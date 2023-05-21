@@ -46,6 +46,19 @@
                         <p>Favorite: {{ value.jour_like }}</p>
                         <router-link class="readmore" :to="`/memo/detail/${value.jour_id}`">Read more...</router-link>
                     </div>
+                    <footer v-if="user && user.role == 'Admin'" class="card-footer">
+                        <!-- <router-link class="card-footer-item" :to="`/blogs/detail/${blog.id}`">Read more...</router-link> -->
+                        <a class="card-footer flex text-center">
+                            <div
+                                class="w-1/2 border-t border-r border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-600 hover:bg-slate-100">
+                                Edit
+                            </div>
+                            <div
+                                class="w-1/2 border-t border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-600 hover:bg-slate-100">
+                                Delete
+                            </div>
+                        </a>
+                    </footer>
 
                 </div>
             </div>
@@ -57,6 +70,7 @@
 import axios from '@/plugins/axios.js'
 export default {
     name: 'list',
+    props: ['user'],
     data() {
         return {
             country_select: "",
