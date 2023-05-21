@@ -35,7 +35,7 @@
         <div class="justify-center ">
             <div class="gap-8 grid grid-cols-4 mt-4 px-8 mb-5">
                 <div class="card bg-white border-0 rounded-md " v-for="value in keyword" :key="value">
-                    <!-- <img :src="value.image" alt="pic" class="rounded-t-md" style="width:100%"> -->
+                    <img src="https://images.unsplash.com/photo-1538640206218-edd12e7624fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" alt="pic" class="rounded-t-md" style="width:100%">
                     <div class="card-data p-3">
                         <h4><b>{{ value.jour_title }}</b></h4>
                         <p>{{ value.country }}, {{ value.state_province }}, {{ value.city }}</p>
