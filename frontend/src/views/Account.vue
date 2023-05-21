@@ -8,7 +8,7 @@
             <h2 class="text-2xl ml-8 mb-8">Favourite (1)</h2>
             <div class="justify-center ">
                 <div class="gap-8 grid grid-cols-4 mt-4 px-8 mb-16">
-                    <div class="card bg-white border-0 rounded-md " v-for="value in getData" :key="value">
+                    <div class="card flex flex-col justify-between bg-white border-0 rounded-md " v-for="value in getData" :key="value">
                         <a href="" onclick="alert('test')">
                             <!-- <img :src="value.image" alt="pic" class="rounded-t-md" style="width:100%"> -->
                             <div class="card-data p-3">
@@ -42,7 +42,7 @@
             <h2 class="text-2xl ml-8 mb-8">All (8)</h2>
             <div class="justify-center ">
                 <div class="gap-8 grid grid-cols-4 mt-4 px-8  mb-5">
-                    <div class="card bg-white border-0 rounded-md hover:bg-slate-100" v-for="value in getData" :key="value">
+                    <div class="card flex flex-col justify-between bg-white border-0 rounded-md hover:bg-slate-100" v-for="value in getData" :key="value">
                         <a href="" onclick="alert('test')">
                             <!-- <img :src="value.image" alt="pic" class="rounded-t-md" style="width:100%"> -->
                             <div class="card-data p-3">
