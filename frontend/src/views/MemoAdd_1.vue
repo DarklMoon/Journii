@@ -1193,7 +1193,6 @@ import axios from '@/plugins/axios'
       }
     },
     submitDelete(bool) {
-      // console.log(this.form2nd.indexDelete.length);
       if (bool == true && this.form2nd.indexDelete.length != 0) {
         let i = 0;
         let sortDESC = this.form2nd.indexDelete.sort().reverse();
