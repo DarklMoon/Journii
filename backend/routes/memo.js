@@ -93,14 +93,25 @@ router.put("/memoes/add/fav/:id", async function (req, res, next) {
 });
 
 //Delete Memo
-router.delete("/memoes/:id", function (req, res, next) {
+router.delete("/memoes/:id", async function (req, res, next) {
+  const [blog] = await pool.query('select * from journey where jour_id = ?', [req.params.id])
+  const conn = await pool.getConnection()
+  await conn.beginTransaction()
   try {
-
-    return res.status(200).json({
-      msg: `Delete Memo ${req.params.id}!`,
-    });
+    await pool.query('delete from journey where jour_id = ?', [req.params.id])
+    await conn.commit()
+    return res.status(200).send({
+      "message": `ลบ ToDo '${blog[0].jour_title}' สำเร็จ`,
+    })
   } catch (error) {
-    return res.status(400).json(err);
+    console.log(error)
+    await conn.rollback();
+    return res.status(404).send({
+      "message": "ไม่พบ journey ที่ต้องการลบ"
+    })
+  } finally {
+    conn.release()
+    // console.log(req.params.id)
   }
 })
 
