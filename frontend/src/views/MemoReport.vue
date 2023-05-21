@@ -61,6 +61,7 @@ import { required, email, minLength, maxLength, sameAs, helpers } from '@vuelida
 
 export default {
     name: 'report',
+    props: ['user'],
     setup() {
         return { v$: useVuelidate() };
     },
