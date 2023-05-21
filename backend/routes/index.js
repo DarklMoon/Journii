@@ -4,10 +4,20 @@ const pool = require("../config");
 router = express.Router();
 
 router.get("/", async function (req, res, next) {
+    try {
+        // const search = req.query.search || ''
+        let sql = "SELECT jour_id,jour_title, jour_script, DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e`, jour_like, total_price, city, state_province, country  FROM journey JOIN location USING (location_id)"
+        // let cond = []
     
-    return res.json({
-        msg: 'Hello World!'
-    })
+        // if (search.length > 0) {
+        //   sql = 'SELECT a.*, b.file_path FROM blogs AS a LEFT JOIN (SELECT * FROM images WHERE main=1) AS b ON a.id = b.blog_id WHERE a.title LIKE ? OR a.content LIKE ?;'
+        //   cond = [`%${search}%`, `%${search}%`]
+        // }
+        const [rows] = await pool.query(sql);
+        return res.json(rows);
+      } catch (err) {
+        return res.status(500).json(err)
+      }
 });
 
 exports.router = router;

@@ -42,14 +42,14 @@ async function isLoggedIn(req, res, next) {
 
 //ดูว่าเป็นบล็อกของตัวเองรึป่าว
 const blogOwner = async (req, res, next) => {
-  // if (req.user.role === 'admin') {
-  //     return next()
-  // }
-  // const [[blog]] = await pool.query('SELECT * FROM user WHERE id=?', [req.params.id])
+  if (req.user.role === 'admin') {
+      return next()
+  }
+  const [[blog]] = await pool.query('SELECT * FROM user WHERE user_id=?', [req.params.id])
 
-  // if (blog.create_by_id !== req.user.id) {
-  //     return res.status(403).send('You do not have permission to perform this action')
-  // }
+  if (blog.create_by_id !== req.user.id) {
+      return res.status(403).send('You do not have permission to perform this action')
+  }
 
   next()
 }

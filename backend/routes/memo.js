@@ -22,84 +22,86 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //Create Memo (Main Detail)
-router.post("/memoes/main", upload.array("imageMemo", 5), async function (req, res, next){
-    try {
-        
-        return res.status(201).json({
-            msg: 'Create Memo! (Main Detail)'
-        })
-    } catch (error) {
-        return res.status(400).json(err);
-    }
+router.post("/memoes/main", upload.array("imageMemo", 5), async function (req, res, next) {
+  try {
+
+    return res.status(201).json({
+      msg: 'Create Memo! (Main Detail)'
+    })
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 })
 
 //Create Memo (Optional Detail)
-router.post("/memoes/optional", upload.array("imageMemo", 5), async function (req, res, next){
-    try {
+router.post("/memoes/optional", upload.array("imageMemo", 5), async function (req, res, next) {
+  try {
 
-      return res.status(201).json({
-        msg: "Create Memo! (Optional Detail)",
-      });
-    } catch (error) {
-      return res.status(400).json(err);
-    }
+    return res.status(201).json({
+      msg: "Create Memo! (Optional Detail)",
+    });
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 })
 
 //Get Memo detail
-router.get("/memoes/:id", function (req, res, next) {
+router.get("/memoes/:id", async function (req, res, next) {
+  const get_blog = await pool.query("SELECT *,DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e` FROM journey JOIN location USING (location_id) WHERE jour_id=?", [
+    req.params.id,
+  ]);
 
-    return res.status(200).json({
-      msg: `Get Memoes ${req.params.id}!`,
-    });
+  // console.log(get_blog[0][0])
+  res.send(get_blog[0][0])
 
 })
 
 //Edit Memo
 router.put("/memoes/edit/:id", async function (req, res, next) {
-    try {
+  try {
 
-      return res.status(200).json({
-        msg: `Edit Memo ${req.params.id}!`,
-      });
-    } catch (error) {
-      return res.status(400).json(err);
-    }
+    return res.status(200).json({
+      msg: `Edit Memo ${req.params.id}!`,
+    });
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 });
 
 //Add like Memo
 router.put("/memoes/add/like/:id", async function (req, res, next) {
-    try {
+  try {
 
-      return res.status(200).json({
-        msg: `Add Like Memo ${req.params.id}!`,
-      });
-    } catch (error) {
-      return res.status(400).json(err);
-    }
+    return res.status(200).json({
+      msg: `Add Like Memo ${req.params.id}!`,
+    });
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 });
 
 //Add Fav Memo
 router.put("/memoes/add/fav/:id", async function (req, res, next) {
-    try {
+  try {
 
-      return res.status(200).json({
-        msg: `Add Fav Memo ${req.params.id}!`,
-      });
-    } catch (error) {
-      return res.status(400).json(err);
-    }
+    return res.status(200).json({
+      msg: `Add Fav Memo ${req.params.id}!`,
+    });
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 });
 
 //Delete Memo
 router.delete("/memoes/:id", function (req, res, next) {
-    try {
+  try {
 
-      return res.status(200).json({
-        msg: `Delete Memo ${req.params.id}!`,
-      });
-    } catch (error) {
-      return res.status(400).json(err);
-    }
+    return res.status(200).json({
+      msg: `Delete Memo ${req.params.id}!`,
+    });
+  } catch (error) {
+    return res.status(400).json(err);
+  }
 })
 
 exports.router = router;

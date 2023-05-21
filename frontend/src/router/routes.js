@@ -45,6 +45,12 @@ const routes = [
     meta: { login: true },
     component: () => import("@/views/MemoAdd_3.vue"),
   },
+  {
+    path: "/memo/detail/:id",
+    name: "detail",
+    meta: { guess: true },
+    component: () => import("@/views/MemoDetail.vue"),
+  },
 
   {
     path: "/user/signin",
