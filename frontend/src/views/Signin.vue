@@ -6,14 +6,13 @@
                 <form action="">
                     <h2 class="text-center text-4xl">Log in</h2>
                     <div class="inputbox relative mx-30 w-310 pt-6 pb-1">
-                        <ion-icon class="absolute right-0 " name="mail-outline"></ion-icon>
-                        <input class="w-full h-50 bg-transparent" type="email" placeholder="Email" v-model='email'
-                            required>
+                        <ion-icon class="absolute right-0" name="person-outline"></ion-icon>
+                        <input class="w-full h-50 bg-transparent" type="text" placeholder="Username" v-model='username' required>
                     </div>
                     <div class="inputbox relative mx-30 w-310 pt-6 pb-1">
                         <ion-icon class="absolute right-0" name="lock-closed-outline"></ion-icon>
-                        <input class="w-full h-50 bg-transparent" type="password" placeholder="Password"
-                            v-model='password' required>
+                        <input class="w-full h-50 bg-transparent" type="password" placeholder="Password" v-model='password'
+                            required>
                     </div>
                     <button type="button"
                         class="mt-5 mb-2 rounded-2xl w-full h-8 text-black bg-white transition duration-100 ease-in-out hover:bg-neutral-300"
@@ -33,34 +32,38 @@
 </template>
 
 <script>
+import {IonIcon} from '@ionic/vue'
 import axios from '@/plugins/axios.js'
 export default {
     name: 'Signin',
+    components: {IonIcon},
     data() {
         return {
-            email:'',
-            password:''
+            username: '',
+            password: ''
         }
 
     },
     methods: {
         Login() {
             const data = {
-                email: this.email,
+                username: this.username,
                 password: this.password
+                
             }
 
             axios.post('/user/login', data)
                 .then(res => {
-                    // const token = res.data.token
-                    // localStorage.setItem('token', token)
-                    // this.$emit('auth-change')
-                    // this.$router.push({ path: '/' })
-                    // console.log(res.data)
+                    const token = res.data.token
+                    localStorage.setItem('token', token)
+                    this.$emit('auth-change')
+                    this.$router.push({
+                        name: 'account'
+                    })
                     console.log('test')
                 })
                 .catch(error => {
-                    this.error = error.response.data
+                    // this.error = error.response.data
                     console.log(error.response.data)
                 })
         }

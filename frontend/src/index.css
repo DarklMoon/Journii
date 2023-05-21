@@ -19,7 +19,7 @@
     }
     .add-jour-btn{
         background-color: #E4B4B4;
-        @apply absolute right-[5em] top-[50%] -translate-y-1/2 px-2 py-1 rounded-md
+        @apply absolute right-[5em] top-[50%] -translate-y-1/2 px-2 py-1 rounded-md text-black hover:text-white
     }
     .list-form-btn{
         @apply text-xl w-2/3 h-[10%] bg-pink rounded-md flex justify-center items-center p-4 m-[20%]

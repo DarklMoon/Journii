@@ -5,8 +5,9 @@ async function logger(req, res, next) {
 }
 
 const pool = require("../config");
+
 async function isLoggedIn(req, res, next) {
-  let authorization = req.headers.authorization; //ปกติต้องจะแนบ authorization มา
+  let authorization = req.headers.authorization; //ปกติต้องจะแนบ authorization มา ดึงจากheadersตอนเรียกapi
 
   if (!authorization) {
     return res.status(401).send("You are not logged in");
@@ -29,8 +30,8 @@ async function isLoggedIn(req, res, next) {
 
   // Set user
   const [users] = await pool.query(
-    "SELECT id, username, first_name, last_name, email, role " +
-      "FROM user WHERE id = ?",
+    "SELECT user_id, username, first_name, last_name, email, role " +
+      "FROM user WHERE user_id = ?",
     [token.user_id]
   );
   //set เข้าไปใน req.
@@ -44,7 +45,7 @@ const blogOwner = async (req, res, next) => {
   if (req.user.role === 'admin') {
       return next()
   }
-  const [[blog]] = await pool.query('SELECT * FROM user WHERE id=?', [req.params.id])
+  const [[blog]] = await pool.query('SELECT * FROM user WHERE user_id=?', [req.params.id])
 
   if (blog.create_by_id !== req.user.id) {
       return res.status(403).send('You do not have permission to perform this action')
