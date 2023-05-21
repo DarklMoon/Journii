@@ -109,9 +109,9 @@
         background-image: url('./assets/image/pic0.jpeg');
     }
 
-    .inputbox {
+    /* .inputbox {
         border-bottom: 2px solid white;
-    }
+    } */
 
     input::placeholder {
         color: #d4d4d8;
