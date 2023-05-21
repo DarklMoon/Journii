@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `journii`.`DETAIL_IMAGE` (
   `image_file` VARCHAR(200) NULL,
   `detail_id` INT UNSIGNED NULL,
   `jour_id` INT UNSIGNED NULL,
+  `main` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`image_id`),
   UNIQUE INDEX `image_id_UNIQUE` (`image_id` ASC) VISIBLE,
   INDEX `jour_id_idx` (`jour_id` ASC) VISIBLE,

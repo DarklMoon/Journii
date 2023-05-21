@@ -51,4 +51,5 @@ INSERT INTO `LOG` (`log_id`, `user_id`, `jour_id`, `report_id`, `log_time`, `log
 (8, 3, 5, 3, CURRENT_TIMESTAMP, 'Add Report'),
 (9, 5, 5, 4, CURRENT_TIMESTAMP, 'Add Report');
 
+ALTER TABLE `DETAIL_IMAGE` ADD `main` TINYINT NOT NULL DEFAULT 0;
 -- `jour_id` ,`jour_title`,`jour_script`,`jour_start`,`jour_end`,`jour_fav`,`co_traveller`,`total_price`,`jour_like` ,`location_id`,`jour_status`
