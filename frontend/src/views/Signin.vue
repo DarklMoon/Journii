@@ -6,8 +6,8 @@
                 <form action="">
                     <h2 class="text-center text-4xl">Log in</h2>
                     <div class="inputbox relative mx-30 w-310 pt-6 pb-1">
-                        <ion-icon class="absolute right-0 " name="mail-outline"></ion-icon>
-                        <input class="w-full h-50 bg-transparent" type="email" placeholder="Email" v-model='email' required>
+                        <ion-icon class="absolute right-0" name="person-outline"></ion-icon>
+                        <input class="w-full h-50 bg-transparent" type="text" placeholder="Username" v-model='username' required>
                     </div>
                     <div class="inputbox relative mx-30 w-310 pt-6 pb-1">
                         <ion-icon class="absolute right-0" name="lock-closed-outline"></ion-icon>
@@ -39,7 +39,7 @@ export default {
     components: {IonIcon},
     data() {
         return {
-            email: '',
+            username: '',
             password: ''
         }
 
@@ -47,7 +47,7 @@ export default {
     methods: {
         Login() {
             const data = {
-                email: this.email,
+                username: this.username,
                 password: this.password
                 
             }

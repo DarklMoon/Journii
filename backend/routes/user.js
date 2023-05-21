@@ -71,7 +71,7 @@ router.post('/user/signup', async (req, res, next) => {
 })
 
 const loginSchema = Joi.object({
-  email: Joi.string().required(),
+  username: Joi.string().required(),
   password: Joi.string().required()
 })
 
@@ -82,9 +82,9 @@ router.post('/user/login', async (req, res, next) => {
     return res.status(400).json(error);
   }
   // console.log(req)
-  const email = req.body.email
+  const username = req.body.username
   const password = req.body.password
-  console.log(email)
+  console.log(username)
   console.log(password)
   const conn = await pool.getConnection()
   await conn.beginTransaction()
@@ -92,8 +92,8 @@ router.post('/user/login', async (req, res, next) => {
   try {
     // Check if username is correct
     const [users] = await conn.query(
-      'SELECT * FROM user WHERE email=?',
-      [email]
+      'SELECT * FROM user WHERE username=?',
+      [username]
     )
     const user = users[0]
     console.log(user)

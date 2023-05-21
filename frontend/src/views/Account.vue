@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <div class="relative">
-            <h1 class="text-4xl text-center my-7">Aom's Journey</h1>
+            <h1 class="text-4xl text-center my-7" >{{ user.username }}'s Journey</h1>
             <button class="add-jour-btn">Sort&Filter</button>
         </div>
         <div class="fav">
@@ -79,9 +79,11 @@
 import axios from '@/plugins/axios.js'
 export default {
     name: 'Account',
+    props: ['user'],
     data() {
         return {
             getData: [],
+            
         }
     },
     created() {
