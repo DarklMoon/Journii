@@ -24,9 +24,9 @@
 
                         </div>
                         <!-- </a> -->
-                        <footer class="card-footer">
+                        <!-- <footer class="card-footer"> -->
                             <!-- <router-link class="card-footer-item" :to="`/blogs/detail/${blog.id}`">Read more...</router-link> -->
-                            <a class="card-footer flex text-center">
+                            <!-- <a class="card-footer flex text-center">
                                 <div
                                     class="w-1/2 border-t border-r border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-600 hover:bg-slate-100">
                                     <router-link :to="`/memo/edit/${value.jour_id}`">Edit</router-link>
@@ -36,7 +36,7 @@
                                     Delete
                                 </div>
                             </a>
-                        </footer>
+                        </footer> -->
                         <!-- </div> -->
 
                         <!-- <a href="" onclick="alert('test')"> -->

@@ -37,10 +37,10 @@
                                     <input type="text" class="text-sm w-3/4 truncate p-1 border-2 border-gray-500 rounded-md" v-model="blog.street_address">
                                     <!-- value="blog.street_address" -->
                                 </h1>
-                                <h1>COUNTRY : <input type="text" class="text-sm w-3/4 truncate p-1 border-2 border-gray-500 rounded-md" v-model="blog.country">
+                                <h1>COUNTRY : <br><input type="text" class="text-sm w-3/4 truncate p-1 border-2 border-gray-500 rounded-md" v-model="blog.country">
                                 </h1>
 
-                                <h1 class="mt-2">PROVINCE :
+                                <h1 class="mt-2">PROVINCE :<br>
                                     <input type="text" class="text-sm w-3/4 truncate p-1 border-2 border-gray-500 rounded-md" v-model="blog.state_province">
                                 </h1>
                                 <h1 class="mt-2">CITY :<br><input type="text" class="text-sm w-3/4 truncate p-1 border-2 border-gray-500 rounded-md" v-model="blog.city">
@@ -55,7 +55,7 @@
                             </div>
                             <hr class="mt-3">
                             <div class="grid grid-cols-2 mt-3">
-                                <h1>START TIME :
+                                <h1>START TIME :<br>
                                     <input type="text" class="text-sm w-3/4 truncate p-1 border-2 border-gray-500 rounded-md" v-model="blog.date_s">
                                 </h1>
                                 <h1>END TIME :<br>
@@ -75,7 +75,7 @@
                             </div> -->
                         </div>
                         <!-- </template> -->
-                        <button @click="update()"
+                        <button @click="update($route.params.id)"
                             class="float-right m-1 text-[1.1vw] mt-3 h-3/4 p-2 px-3 bg-green rounded-md hover:text-white">Save</button>
                     </div>
 
@@ -99,9 +99,9 @@ export default {
     },
     mounted() {
         this.getBlogDetail(this.$route.params.id);
-        // this.update(this.$route.params.id);
     },
     methods: {
+        
         getBlogDetail(blogId) {
             axios
                 .get(`/memoes/${blogId}`)
@@ -118,7 +118,9 @@ export default {
             axios
                 .put(`/memoes/edit/${blogId}`, this.blog)
                 .then((response) => {
-                    this.$router.push({ path: `/memo/detail/${blogId}` });
+                    console.log(this.blog)
+                    // this.$router.push({ path: `/memo/detail/${blogId}` });
+                    location.reload()
                 })
                 .catch((error) => {
                     this.error = error.response.data.message;

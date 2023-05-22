@@ -23,7 +23,7 @@
                                 <router-link :to="{ name: 'report' }">Report</router-link></button>
                         </div>
                         <div>
-                            <img src="https://images.unsplash.com/photo-1538640206218-edd12e7624fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+                            <img :src="imagePath(blog.image_file)"
                                 class="w-1/2 mx-auto mb-4" alt="">
 
                         </div>
@@ -138,6 +138,13 @@ export default {
                 .catch((error) => {
                     this.error = error.response.data.message;
                 });
+        },
+        imagePath(file_path) {
+            if (file_path) {
+                return "http://localhost:3000/" + file_path;
+            } else {
+                return "https://images.unsplash.com/photo-1684216116726-a6d0cea8e93f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2344&q=80";
+            }
         },
     },
 

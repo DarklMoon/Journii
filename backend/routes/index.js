@@ -7,7 +7,7 @@ router = express.Router();
 router.get("/", async function (req, res, next) {
     try {
         // const search = req.query.search || ''
-        let sql = "SELECT *, DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e`  FROM journey JOIN location USING (location_id) join detail_image using(jour_id)"
+        let sql = "SELECT *, DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e`  FROM journey JOIN location USING (location_id) left join detail_image using(jour_id)"
         
 
         const [rows] = await pool.query(sql);
