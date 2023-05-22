@@ -62,7 +62,6 @@ router.post("/memoes/main", isLoggedIn,  upload.array("imageMemo", 5), async fun
       ]);
     }
 
-    console.log("Hello Worllddd", req.user);
     let log = await conn.query(
       "INSERT INTO `LOG`(`user_id`, `jour_id`, `log_time`, `log_action`)\
       VALUES(?, ?, CURRENT_TIMESTAMP, 'Add Journi');",
@@ -85,7 +84,7 @@ router.post("/memoes/main", isLoggedIn,  upload.array("imageMemo", 5), async fun
 })
 
 //Create Memo (Optional Detail)
-router.post("/memoes/optional/:jour_id", upload.array("imageMemoMore", 5), async function (req, res, next) {
+router.post("/memoes/optional/:jour_id", isLoggedIn, upload.array("imageMemoMore", 5), async function (req, res, next) {
   const file = req.files;
   const jourId = req.params.jour_id;;
   let pathArray = [];

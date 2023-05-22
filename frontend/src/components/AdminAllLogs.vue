@@ -20,7 +20,7 @@
                 </div>
                 <template v-if = "filter.length === 0">
                   <div class="table-row-group divide-y divide-grey-100 bg-white" v-for="(item, index) in log_data" :key="index">
-                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" href="">
+                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" @click="$router.push({name:'detail',params:{id:item.jour_id}})">
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                             <p>{{ item.log_id }}</p>
                         </div>
@@ -52,7 +52,7 @@
                 </template>
                 <template v-else>
                   <div class="table-row-group divide-y divide-grey-100 bg-white" v-for="(item, index) in filter" :key="index">
-                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" href="">
+                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" @click="$router.push({name:'detail',params:{id:item.jour_id}})">
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                             <p>{{ item.log_id }}</p>
                         </div>

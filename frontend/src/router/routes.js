@@ -20,7 +20,6 @@ const routes = [
     component: () => import("@/views/Admin.vue"),
   },
 
-
   {
     path: "/memo",
     name: "list",
@@ -39,7 +38,6 @@ const routes = [
     meta: { guess: true },
     component: () => import("@/views/MemoDetail.vue"),
   },
-
 
   {
     path: "/report",
@@ -65,6 +63,12 @@ const routes = [
     name: "account",
     meta: { login: true },
     component: () => import("@/views/Account.vue"),
+  },
+  {
+    path: "/user/:id",
+    name: "eachAccount",
+    meta: { login: true },
+    component: () => import("@/views/EachAccount.vue"),
   },
   {
     path: "/contact",
