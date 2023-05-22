@@ -5,7 +5,7 @@ const { isLoggedIn } = require("../middlewares");
 router = express.Router();
 
 //Get All Users for Admin Page
-router.get("/admin/allUser", async function (req, res, next) {
+router.get("/admin/allUser", isLoggedIn, async function (req, res, next) {
    try {
      //  AND `role` = 'Normal'  <<< IF WANNA SEE ONLY NORMAL USER (NOT CONTAIN ADMIN) USE THIS!
      const [rows] = await pool.query(
@@ -27,7 +27,7 @@ router.get("/admin/allUser", async function (req, res, next) {
 });
 
 //Get All Admins for Admin Page
-router.get("/admin/allAdmin", async function (req, res, next) {
+router.get("/admin/allAdmin", isLoggedIn, async function (req, res, next) {
     try {
       const [rows] = await pool.query(
         "SELECT `user_id`,`username`, `first_name`, `last_name`, `email`, `gender`, COUNT(DISTINCT `jour_id`) `numLogs`, COUNT(`report_id`) `total_reports`\
@@ -54,7 +54,7 @@ router.get("/admin/allAdmin", async function (req, res, next) {
 });
 
 //Get All Logs for Admin Page
-router.get("/admin/allLogs", async function (req, res, next) {
+router.get("/admin/allLogs", isLoggedIn, async function (req, res, next) {
   try {
     const [rows] = await pool.query(
       "SELECT `log_id`, `jour_id`, `username`, `first_name`, `last_name`, `role`, `log_action`, DATE_FORMAT(`log_time`, '%Y-%m-%d') `date`, \
@@ -70,7 +70,7 @@ router.get("/admin/allLogs", async function (req, res, next) {
 });
 
 //Get All Reports for Admin Page
-router.get("/admin/allReports", async function (req, res, next) {
+router.get("/admin/allReports", isLoggedIn, async function (req, res, next) {
   try {
     const [rows] = await pool.query(
       "SELECT `report_id`, `jour_id`, `username`, `first_name`, `last_name`, `email`, `report_type`, `report_info`, `report_status`, DATE_FORMAT(`log_time`, '%Y-%m-%d') `date`, \
@@ -83,6 +83,22 @@ router.get("/admin/allReports", async function (req, res, next) {
     return res.status(200).json(rows);
   } catch (error) {
     return res.status(404).send(error);
+  }
+});
+
+router.get("/user/:id", async function (req, res, next) {
+  const userId = req.params.id;
+  try {
+    const [rows] = await pool.query(
+      "SELECT *, DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e`  \
+      FROM `journey` JOIN `location` USING (`location_id`)\
+      JOIN `LOG` USING (`jour_id`) JOIN `USER` USING (`user_id`)\
+      WHERE `user_id` = ? AND `log_action` = 'Add Journi';",
+      [userId]
+    );
+    return res.json({data: rows});
+  } catch (err) {
+    return res.status(500).json(err);
   }
 });
 

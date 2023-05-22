@@ -20,7 +20,7 @@
                 </div>
                 <template v-if = "filter.length === 0">
                     <div class="table-row-group divide-y divide-grey-100 bg-white" v-for="(item, index) in admin_data" :key="index">
-                        <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" href="">
+                        <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" @click="$router.push({name:'eachAccount',params:{id:item.user_id}})">
                             <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                 <p>{{ item.user_id }}</p>
                             </div>
@@ -50,7 +50,7 @@
                 </template>
                 <template v-else>
                     <div class="table-row-group divide-y divide-grey-100 bg-white" v-for="(item, index) in filter" :key="index">
-                        <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" href="">
+                        <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" @click="$router.push({name:'eachAccount',params:{id:item.user_id}})">
                             <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                                 <p>{{ item.user_id }}</p>
                             </div>

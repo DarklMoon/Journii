@@ -9,6 +9,7 @@
                 <div class="table-header-group bg-brown-light text-brown border-b-2 border-gray-200">
                     <div class="table-row">
                         <div class="text-center table-TH">REPORT_ID</div>
+                        <div class="table-cell text-left table-TH">JOUR_ID</div>
                         <div class="table-cell text-left table-TH">USERNAME</div>
                         <div class="table-cell text-left table-TH">FIRSTNAME</div>
                         <div class="table-cell text-left table-TH">LASTNAME</div>
@@ -21,9 +22,12 @@
                 </div>
                 <template v-if = "filter.length === 0">
                   <div class="table-row-group divide-y divide-grey-100 bg-white" v-for="(item, index) in report_data" :key="index">
-                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" href="">
+                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" @click="$router.push({name:'detail',params:{id:item.jour_id}})">
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                             <p>{{ item.report_id }}</p>
+                        </div>
+                        <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                            <p>{{ item.jour_id }}</p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
                             <p>{{ item.username }}</p>
@@ -58,9 +62,12 @@
 
                 <template v-else>
                   <div class="table-row-group divide-y divide-grey-100 bg-white" v-for="(item, index) in filter" :key="index">
-                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" href="">
+                    <a @click.stop.prevent="doThat" class="table-row transition ease-in-out delay-50 hover:bg-[#c5d5b8]" @click="$router.push({name:'detail',params:{id:item.jour_id}})">
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                             <p>{{ item.report_id }}</p>
+                        </div>
+                        <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                            <p>{{ item.jour_id }}</p>
                         </div>
                         <div class="table-cell p-3 text-sm text-gray-700 whitespace-nowrap">
                             <p>{{ item.username }}</p>
