@@ -1,11 +1,10 @@
 <template>
   <div class="relative flex items-center w-full px-8 my-auto">
-    <div class="txt w-1/2 justify-start">
+    <div class="txt w-1/2 justify-start p-5">
       <h1 class="text-5xl pb-20">Welcome to <br> My Journey Log</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi eligendi velit
-        numquam.
-        Dicta odio suscipit dolores. Sunt quo fuga nostrum ullam dolorem voluptate deleniti provident
-        consequuntur, nulla, minima incidunt!</p>
+      <p>&nbsp;&nbsp;การเดินทางท่องเที่ยวมักจะมีจุดประสงค์เพื่อการพักผ่อนหย่อนใจหรือเพื่อหาความสนุก หาความตื่นเต้น หรือเพื่อหาความรู้เพิ่มเติม ซึ่งการท่องเที่ยวในบางครั้งก็เป็นความทรงจำที่ไม่อยากจะลืมและอยากที่จะได้รับมันอีกครั้งหนึ่ง แต่หากไม่มีการบันทึกรายละเอียดถึงสิ่งที่ทำในทริปการท่องเที่ยวนั้นหรืออาจจะบันทึกได้โดยไม่ครบถ้วนสมบูรณ์หรือเกิดเหตุการณ์ที่ไม่สามารถเปิดดูการบันทึกนั้นได้ เช่น บันทึกหาย, จำแหล่งบันทึกไม่ได้ เป็นต้น มันก็จะเป็นเรื่องที่น่าเสียดายอย่างยิ่ง
+      </p><br>
+      <p>&nbsp;&nbsp; เว็บไซต์จึงเกิดขึ้นเพื่อแก้ไขปัญหาดังกล่าว รวมไปถึงมีระบบการทำงานเพิ่มเติมเพื่อช่วยอำนวยความสะดวกสำหรับผู้ที่เข้ามาใช้งาน</p>
     </div>
     <div class="txt w-1/2 justify-end">
       <img class="w-11/12" src="/src/assets/image/pic.jpeg" alt="">

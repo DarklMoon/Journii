@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen w-full">
-        <div class="flex flex-col justify-center items-center w-full h-2/6">
+        <div class="flex flex-col justify-center items-center w-full h-2/6 mt-6">
             <h1 class="text-[3em] mt-4 mb-4 font-medium">Contact JOURNII</h1>
             <p class="text-gray-500 font-light">Get in touch with us to get information</p>
             <hr class="mt-2 w-1/2 ">

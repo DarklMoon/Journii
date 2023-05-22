@@ -91,7 +91,7 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                     </div>
 
                     <div v-if="imageErr == true">
-                      <p class="text-red-400">Images must not be too large!</p>
+                      <p class="text-red-400">Images must not be too large over than 3MB!</p>
                     </div>
 
                     <div v-if="images" class="flex">
@@ -204,11 +204,11 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                              <div class="pt-5">
                                   <div class="relative">
                                       <p>IMAGE</p>
-                                      <input type="file" multiple @change="selectImagesMore" class="input-memoAdd" accept="image/png, image/jpeg, image/webp" placeholder="1">
+                                      <input type="file" multiple @change="selectImagesMore" name="imageMemoMore" class="input-memoAdd" accept="image/png, image/jpeg, image/webp" placeholder="1">
                                       <br>
                                   </div>
                                   <div v-if="image_moreErr == true">
-                                    <p class="text-red-400">Images must not be too large!</p>
+                                    <p class="text-red-400">Images must not be too large over than 2MB!</p>
                                   </div>
                                 
                                   <div v-if="images_more" class="flex">
@@ -410,7 +410,7 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                                 </template>
                                 <template v-else>
                                     <tr>
-                                        <td colspan="7" class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">ไม่พบข้อมูล</td>
+                                        <td colspan="7" class="p-3 text-sm text-gray-700 whitespace-nowrap text-center">กรุณาเพิ่มข้อมูล</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -602,7 +602,7 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
                 </div>
                 <div class="flex justify-around py-5">
                     <button @click="SecondForm()" class="m-1 text-[1.1vw] mt-3 h-3/4 p-2 px-3 bg-green rounded-md hover:text-white">Back</button>
-                    <button @click="submitAll()" class="m-1 text-[1.1vw] mt-3 h-3/4 p-2 px-3 bg-green rounded-md hover:text-white">Submit</button>
+                    <button @click="submitMain()" class="m-1 text-[1.1vw] mt-3 h-3/4 p-2 px-3 bg-green rounded-md hover:text-white">Submit</button>
                 </div>    
             </div>
           </div>
@@ -628,10 +628,6 @@ background: linear-gradient(90deg, rgba(227,232,233,1) 0%, rgba(227,232,233,1) 7
 
     
 </template>
-
-<script setup>
-    import Footer from '@/components/Footer.vue' 
-</script>
 
 <script>
 import axios from '@/plugins/axios'
@@ -704,6 +700,7 @@ import axios from '@/plugins/axios'
       imageErr: false,
       image_moreErr: false,
       pageNow: 'main',
+      jour_id: '',
 
     };
   },
@@ -994,7 +991,7 @@ import axios from '@/plugins/axios'
         body.style.overflow = "auto";
       }
     },
-    submitAll() {
+    submitMain() {
       console.log(this.showForm1st)
       if (confirm("Do you want to submit it?")) {
         let formData = new FormData();
@@ -1012,36 +1009,43 @@ import axios from '@/plugins/axios'
           const value = this.images[i];
           formData.append("imageMemo", value)
         }
-
         axios.post("/memoes/main", formData).then((res) => {
           console.log(res.data)
+          this.jour_id = res.data.jour_id
+          this.submitMore()
           this.$router.push({name: 'list'})
         }).catch((e) => console.log(e.response.data));
-        // if(this.data_more.length !== 0){
-        //   formData.append("title", this.showForm1st[0].title);
-        //   formData.append("st_address", this.showForm1st[0].st_address);
-        //   formData.append("country", this.showForm1st[0].country);
-        //   formData.append("province", this.showForm1st[0].province);
-        //   formData.append("city", this.showForm1st[0].city);
-        //   formData.append("start", this.showForm1st[0].start);
-        //   formData.append("end", this.showForm1st[0].end);
-        //   formData.append("co_travel", this.showForm1st[0].co_traveller);
-        //   formData.append("price", this.showForm1st[0].price);
-        //   formData.append("descript", this.showForm1st[0].descript);
-        // for (let i = 0; i < this.images_more.length; i++) {
-        //   const value = this.images_more[i];
-        //   formData.append("imageMemoM", value)
-        // }
-        // }
-        // this.images.forEach(image => {
-        //   formData.append("imageMemo", image);
-        // });
 
         alert("Data is added successfully!");
         localStorage.removeItem("data");
         localStorage.removeItem("isEdit");
-
       }
+    },
+    submitMore(){
+       if(this.data_more.length !== 0 && this.jour_id != ''){
+          for (let index = 0; index < this.data_more.length; index++) {
+            var dataMore = this.data_more[index]
+            let formData2 = new FormData();
+            formData2.append("title", dataMore.title);
+            formData2.append("st_address", dataMore.st_address);
+            formData2.append("country", dataMore.country);
+            formData2.append("province", dataMore.province);
+            formData2.append("city", dataMore.city);
+            formData2.append("start", dataMore.start);
+            formData2.append("end", dataMore.end);
+            formData2.append("price", dataMore.price);
+            formData2.append("descript", dataMore.descript);
+
+            for (let i = 0; i < dataMore.image.length; i++) {
+              const value = dataMore.image[i];
+              formData2.append("imageMemoMore", value)
+            }
+            console.log(this.jour_id, '<<<<< id')
+            axios.post(`/memoes/optional/${this.jour_id}`, formData2).then((res) => {
+              console.log(res.data)
+            }).catch((e) => console.log(e.response.data));
+          }
+        }
     },
     onFocus(e, msg) {
       this.form1st.isChange = true;
@@ -1159,9 +1163,11 @@ import axios from '@/plugins/axios'
       let address = `${this.form2nd.street} ${this.form2nd.province} ${this.form2nd.city} ${this.form2nd.country}`;
 
       this.data_more.push({
-        main_id: this.data_length + 1,
-        username: `Test`,
         title: this.form2nd.title,
+        st_address: this.form2nd.st_address,
+        country: this.form2nd.country,
+        city: this.form2nd.city,
+        province: this.form2nd.province,
         address: address,
         start: this.form2nd.start,
         end: this.form2nd.end,
@@ -1176,10 +1182,12 @@ import axios from '@/plugins/axios'
       this.form2nd.city = ''
       this.form2nd.country = ''
       this.form2nd.start = ''
+      this.form2nd.end = ''
       this.form2nd.price = ''
       this.form2nd.descript = ''
       this.images_more = ''
-
+      
+      console.log(this.data_more)
       this.form2nd.isModalAdd = false;
       this.changeOverflow();
     },

@@ -27,9 +27,7 @@ router.post("/memoes/main", isLoggedIn,  upload.array("imageMemo", 5), async fun
   const file = req.files;
   let pathArray = [];
   console.log(req.body);
-  // if (!file) {
-  //   return res.status(400).json({ message: "Please upload a file" });
-  // }
+
   const conn = await pool.getConnection();
   await conn.beginTransaction();
 
@@ -46,22 +44,23 @@ router.post("/memoes/main", isLoggedIn,  upload.array("imageMemo", 5), async fun
       [
         req.body.title,
         req.body.descript,
-        req.body.start,
-        req.body.end,
+        req.body.start == "" ? null : req.body.start,
+        req.body.end == "" ? null : req.body.end,
         req.body.co_travel,
         req.body.price,
-        location[0].insertId
+        location[0].insertId,
       ]
     );
-    console.log(jours[0])
-    req.files.forEach((file, index) => {
-      let path = [file.path.substring(6), jours[0].insertId, index == 0 ? 1 : 0];
-      pathArray.push(path);
-    });
-
-    await conn.query("INSERT INTO `DETAIL_IMAGE`(`image_file`, `jour_id`, `main`) VALUES ?;", [
-      pathArray,
-    ]);
+    if(file.length != 0){
+      req.files.forEach((file, index) => {
+        let path = [file.path.substring(6), jours[0].insertId, index == 0 ? 1 : 0];
+        pathArray.push(path);
+      });
+  
+      await conn.query("INSERT INTO `DETAIL_IMAGE`(`image_file`, `jour_id`, `main`) VALUES ?;", [
+        pathArray,
+      ]);
+    }
 
     console.log("Hello Worllddd", req.user);
     let log = await conn.query(
@@ -86,14 +85,56 @@ router.post("/memoes/main", isLoggedIn,  upload.array("imageMemo", 5), async fun
 })
 
 //Create Memo (Optional Detail)
-router.post("/memoes/optional", upload.array("imageMemo", 5), async function (req, res, next) {
-  try {
+router.post("/memoes/optional/:jour_id", upload.array("imageMemoMore", 5), async function (req, res, next) {
+  const file = req.files;
+  const jourId = req.params.jour_id;;
+  let pathArray = [];
+  console.log(req.body);
+  console.log(file)
 
-    return res.status(201).json({
-      msg: "Create Memo! (Optional Detail)",
-    });
-  } catch (error) {
+  const conn = await pool.getConnection();
+  await conn.beginTransaction();
+
+  try {
+    let location = await conn.query(
+      "INSERT INTO `location`(`street_address`, `city`, `state_province`, `country`) \
+      VALUES(?, ?, ?, ?);",
+      [req.body.st_address, req.body.city, req.body.province, req.body.country]
+    );
+
+    let detail = await conn.query(
+      "INSERT INTO `DETAIL`(`detail_title`, `detail_info`, `detail_start`, `detail_end`, `sub_price`, `location_id`, `jour_id`)\
+      VALUES(?, ?, ?, ?, ?, ?, ?);",
+      [
+        req.body.title,
+        req.body.descript,
+        req.body.start == "" ? null : req.body.start,
+        req.body.end == "" ? null : req.body.end,
+        req.body.price,
+        location[0].insertId,
+        jourId,
+      ]
+    );
+    if (file.length != 0) {
+      req.files.forEach((file, index) => {
+        let path = [file.path.substring(6), detail[0].insertId, jourId,index == 0 ? 1 : 0];
+        pathArray.push(path);
+      });
+
+      await conn.query(
+        "INSERT INTO `DETAIL_IMAGE`(`image_file`, `detail_id`, `jour_id`, `main`) VALUES ?;",
+        [pathArray]
+      );
+    }
+
+    await conn.commit();
+    res.status(200).json({ detail: detail[0] });
+  } catch (err) {
+    await conn.rollback();
+    console.log(err);
     return res.status(400).json(err);
+  } finally {
+    conn.release();
   }
 })
 
