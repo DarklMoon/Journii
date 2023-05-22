@@ -5,6 +5,7 @@ const fs = require("fs");
 const multer = require("multer");
 const Joi = require("joi");
 const { isLoggedIn } = require("../middlewares");
+const { blogOwner } = require("../middlewares");
 
 router = express.Router();
 
@@ -137,26 +138,38 @@ router.post("/memoes/optional/:jour_id", isLoggedIn, upload.array("imageMemoMore
   }
 })
 
-//Get Memo detail
+//Get Memo detail ต้องเป็นblogownerไหท
 router.get("/memoes/:id", async function (req, res, next) {
-  const get_blog = await pool.query("SELECT *,DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e` FROM journey JOIN location USING (location_id) WHERE jour_id=?", [
+  const get_blog = await pool.query("SELECT *,DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e` FROM journey JOIN location USING (location_id) join detail_image using(jour_id)  WHERE jour_id=?", [
     req.params.id,
   ]);
 
-  // console.log(get_blog[0][0])
+  console.log(get_blog[0][0])
   res.send(get_blog[0][0])
 
 })
 
 //Edit Memo
 router.put("/memoes/edit/:id", async function (req, res, next) {
+  title = req.body.jour_title
+  content = req.body.jour_script
+  start = req.body.date_s
+  end = req.body.date_e
+  num = req.body.co_traveller
+  price = req.body.total_price
+
+  // title = req.body.
   try {
+    let results = await conn.query(
+      "UPDATE journey SET jour_title=?, jour_script=?, jour_start=?, jour_end=?, co_traveller=?, total_price=? WHERE jour_id=?",
+      [title, content, start, end, num, price, req.params.id]
+    )
 
     return res.status(200).json({
       msg: `Edit Memo ${req.params.id}!`,
     });
   } catch (error) {
-    return res.status(400).json(err);
+    return res.status(400).json(error);
   }
 });
 
@@ -185,7 +198,7 @@ router.put("/memoes/add/fav/:id", async function (req, res, next) {
 });
 
 //Delete Memo
-router.delete("/memoes/:id", async function (req, res, next) {
+router.delete("/memoes/:id", isLoggedIn, async function (req, res, next) {
   const [blog] = await pool.query('select * from journey where jour_id = ?', [req.params.id])
   const conn = await pool.getConnection()
   await conn.beginTransaction()

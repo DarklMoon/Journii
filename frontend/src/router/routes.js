@@ -40,6 +40,14 @@ const routes = [
   },
 
   {
+    path: "/memo/edit/:id",
+    name: "edit",
+    meta: { login: true },
+    component: () => import("@/views/MemoEdit.vue"),
+  },
+
+
+  {
     path: "/report",
     name: "report",
     meta: { login: true },

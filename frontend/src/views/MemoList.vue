@@ -35,9 +35,8 @@
         <div class="justify-center ">
             <div class="gap-8 grid grid-cols-4 mt-4 px-8 mb-5">
                 <div class="card flex flex-col  bg-white border-0 rounded-md " v-for="value, index in keyword" :key="value">
-                    <img src="https://images.unsplash.com/photo-1538640206218-edd12e7624fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
-                        alt="pic" class="rounded-t-md" style="width:100%">
-                    <div class="card-data flex flex-col p-3">
+                    <img :src="imagePath(value.image_file)" alt="pic" class="rounded-t-md" style="width:100%">
+                    <div class="card-data flex flex-col grow p-3">
                         <h4><b>{{ value.jour_title }}</b></h4>
                         <p>{{ value.country }}, {{ value.state_province }}, {{ value.city }}</p>
                         <p>{{ value.date_s }} - {{ value.date_e }}</p>
@@ -46,14 +45,15 @@
                         <p>Favorite: {{ value.jour_like }}</p>
                         <!-- <ion-icon  name="heart-outline"></ion-icon>
                         <ion-icon  name="heart"></ion-icon> -->
-                        <router-link class="readmore hover:text-amber-800" :to="`/memo/detail/${value.jour_id}`">Read more...</router-link>
+                        <router-link class="readmore hover:text-amber-800" :to="`/memo/detail/${value.jour_id}`">Read
+                            more...</router-link>
                     </div>
                     <footer v-if="user && user.role == 'Admin'" class="card-footer">
                         <!-- <router-link class="card-footer-item" :to="`/blogs/detail/${blog.id}`">Read more...</router-link> -->
                         <a class="card-footer flex text-center">
                             <div
                                 class="w-1/2 border-t border-r border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-600 hover:bg-slate-100">
-                                Edit
+                                <router-link :to="`/memo/edit/${value.jour_id}`">Edit</router-link>
                             </div>
                             <div @click="deleteBlog(value.jour_id, index)"
                                 class="w-1/2 border-t border-neutral-100 px-6 py-3 dark:border-neutral-600 dark:text-neutral-600 hover:bg-slate-100">
@@ -82,25 +82,6 @@ export default {
             word: '',
         }
     },
-
-    methods: {
-        deleteBlog(id, index) {
-            console.log(this.getData)
-            const result = confirm(
-                `Are you sure you want to delete \'${this.getData.jour_title}\'`
-            );
-            if (result) {
-                axios
-                    .delete(`/memoes/${id}`)
-                    .then((response) => {
-                        location.reload()
-                    })
-                    .catch((error) => {
-                        alert(error.response.data.message);
-                    });
-            }
-        }
-    },
     created() {
         axios
             .get("http://localhost:3000", {
@@ -117,6 +98,32 @@ export default {
             });
 
     },
+    methods: {
+        deleteBlog(id, index) {
+            console.log(this.getData[index])
+            const result = confirm(
+                `Are you sure you want to delete \'${this.getData[index].jour_title}\'`
+            );
+            if (result) {
+                axios
+                    .delete(`/memoes/${id}`)
+                    .then((response) => {
+                        location.reload()
+                    })
+                    .catch((error) => {
+                        alert(error.response.data.message);
+                    });
+            }
+        },
+        imagePath(file_path) {
+            if (file_path) {
+                return "http://localhost:3000/" + file_path;
+            } else {
+                return "https://images.unsplash.com/photo-1684216116726-a6d0cea8e93f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2344&q=80";
+            }
+        },
+    },
+
     computed: {
         // countryFilter() {
         //     return this.getData.filter(f => f.country == this.country_select || this.country_select == '')

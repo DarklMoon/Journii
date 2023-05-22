@@ -30,8 +30,8 @@ async function isLoggedIn(req, res, next) {
 
   // Set user
   const [users] = await pool.query(
-    "SELECT `user_id`, `username`, `first_name`, `last_name`, `email`, `role`\
-    FROM `USER` WHERE `user_id` = ?",
+    "SELECT user_id, username, first_name, last_name, email, role " +
+    "FROM user WHERE user_id = ?",
     [token.user_id]
   );
   //set เข้าไปใน req.
@@ -43,14 +43,14 @@ async function isLoggedIn(req, res, next) {
 
 //ดูว่าเป็นบล็อกของตัวเองรึป่าว
 const blogOwner = async (req, res, next) => {
-  if (req.user.role === 'admin') {
-      return next()
+  if (req.user.role === 'Admin') {
+    return next()
   }
-  const [[blog]] = await pool.query('SELECT * FROM user WHERE user_id=?', [req.params.id])
-
-  if (blog.create_by_id !== req.user.id) {
-      return res.status(403).send('You do not have permission to perform this action')
-  }
+  const [[blog]] = await pool.query('SELECT * FROM journey JOIN log USING (jour_id) WHERE user_id = ?', [req.user.user_id])
+  console.log(blog)
+  // if (blog.create_by_id !== req.user.user_id) {
+  //     return res.status(403).send('You do not have permission to perform this action')
+  // }
 
   next()
 }
