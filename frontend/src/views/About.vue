@@ -7,9 +7,9 @@
         </div>
         <div class="grid grid-cols-2 justify-items-center mx-16 mt-5 mb-9">
             <div class="bg-gray-100 drop-shadow-lg w-1/2 flex flex-col justify-center items-center p-7">
-                <img src="/src/assets/image/icon-docs.png" class="w-1/3" alt="">
-                <h1 class="mt-4">Send An Email</h1>
-                <h2>Admin@gmai.com</h2>
+                <img src="/src/assets/image/rabbit.png" class="w-1/3" alt="">
+                <h1 class="mt-4">Rerksurat Attinantachai</h1>
+                <h2>64070094@kmitl.ac.th</h2>
             </div>
             <div class="bg-gray-100 drop-shadow-lg w-1/2 flex flex-col justify-center items-center p-7">
                 <img src="/src/assets/image/moon_icon.png" class="w-1/3" alt="">
