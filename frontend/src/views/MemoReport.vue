@@ -71,6 +71,16 @@ export default {
             description: '',
         }
     },
+    created(){
+         console.log(this.$route.params.id)
+        //  axios.get(`/reports/${this.$route.params.id}`)
+        // .then((response) => {
+        //     this.getData = response.data.data
+        // }).catch((error) => {
+        //   console.log(error.response.data.message)
+        // });
+        // console.log(this.getData)
+    },  
     validations() {
         return {
             selected: {

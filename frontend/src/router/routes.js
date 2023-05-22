@@ -48,7 +48,7 @@ const routes = [
 
 
   {
-    path: "/report",
+    path: "/report/:jour_id",
     name: "report",
     meta: { login: true },
     component: () => import("@/views/MemoReport.vue"),

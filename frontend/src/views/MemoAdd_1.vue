@@ -808,6 +808,9 @@ import axios from '@/plugins/axios'
       ) {
         this.form1st.error.e_people = "กรุณาระบุจำนวนคน'";
         return;
+      } else if(this.form1st.co_traveller < 0){ 
+        this.form1st.error.e_people = "จำนวณคนห้ามติดลบ";
+        return;
       }
       this.form1st.error.e_people = "";
     },
@@ -1208,8 +1211,6 @@ import axios from '@/plugins/axios'
           this.data_more.splice(sortDESC[i], 1);
           i++;
         }
-        // localStorage.removeItem("data_more");
-        // localStorage.setItem("data_more", JSON.stringify(this.data_more));
       }
       this.form2nd.indexDelete = [];
       this.form2nd.isModalDelete = false;
@@ -1224,14 +1225,6 @@ import axios from '@/plugins/axios'
       }
       return this.data_main;
     },
-    // data_more() {
-    //   let getItem = JSON.parse(localStorage.getItem("data_more"));
-    //   if (getItem != null) {
-    //     this.data_more = getItem;
-    //   }
-    //   console.log(this.data_more); 
-    //   return this.data_more;
-    // },
     checkEditForm() {
       let getItem = JSON.parse(localStorage.getItem("isEdit"));
       if (getItem != null) {

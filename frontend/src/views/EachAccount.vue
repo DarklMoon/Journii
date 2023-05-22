@@ -92,14 +92,12 @@ export default {
     data() {
         return {
             getData: [],
-            test: {},
         }
     },
     created() {
         axios.get(`/user/${this.$route.params.id}`)
         .then((response) => {
             this.getData = response.data.data
-            console.log(response.data.data[0])
         }).catch((error) => {
           console.log(error.response.data.message)
         });

@@ -5,7 +5,7 @@
         <div class="box-top  bg-brown text-white text-center">
             <div class="justify-center relative">
                 <h1 class="text-4xl">Journey logs search</h1>
-                <router-link class="add-jour-btn" :to="{ name: 'addJourni_1' }">Add your journey</router-link>
+                <router-link class="add-jour-btn" :to="{ name: 'addJourni_1'}">Add your journey</router-link>
 
             </div>
             <h3 class="pt-2">find your interesting journey logs here !</h3>
@@ -20,7 +20,8 @@
                         <div v-if="user" class="absolute top-1 right-1">
                             <button
                                 class=" text-[1.1vw] h-3/4 p-2 px-3 bg-green rounded-md hover:text-white">
-                                <router-link :to="{ name: 'report' }">Report</router-link></button>
+                                <a @click="$router.push({name:'report',params:{jour_id:blog.jour_id}})">Report</a>
+                                <!-- <router-link :to="{ name: 'report' }">Report</router-link> --></button>
                         </div>
                         <div>
                             <img src="https://images.unsplash.com/photo-1538640206218-edd12e7624fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
@@ -124,7 +125,8 @@ export default {
         }
     },
     mounted() {
-        this.getBlogDetail(this.$route.params.id);
+        console.log(this.$route.params.id)
+        this.getBlogDetail(this.$route.params.id);  
     },
     methods: {
         getBlogDetail(blogId) {
@@ -134,6 +136,7 @@ export default {
                     // console.log(response.data)
                     this.blog = response.data;
                     // console.log(this.blog)
+                    console.log(this.blog.jour_id)
                 })
                 .catch((error) => {
                     this.error = error.response.data.message;

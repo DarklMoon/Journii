@@ -14,8 +14,8 @@ router.post("/reports", async function (req, res, next) {
 
   try {
     let results = await conn.query(
-      "INSERT INTO report(report_type, report_info) " +
-      "VALUES(?, ?);",
+      "INSERT INTO report(report_type, report_info) \
+      VALUES(?, ?);",
       [report_type, description]
     );
     await conn.commit();
@@ -38,16 +38,5 @@ router.get("/reports/:id", function (req, res, next) {
   })
 })
 
-//Delete Report
-router.delete("/reports/:id", async function (req, res, next) {
-  try {
-
-    return res.status(200).json({
-      msg: `Delete report ${req.params.id}!`,
-    });
-  } catch (error) {
-    return res.status(400).json(err);
-  }
-})
 
 exports.router = router;
