@@ -36,6 +36,7 @@
             <div class="gap-8 grid grid-cols-4 mt-4 px-8 mb-5">
                 <div class="card flex flex-col  bg-white border-0 rounded-md " v-for="value, index in keyword" :key="value">
                     <img :src="imagePath(value.image_file)" alt="pic" class="rounded-t-md" style="width:100%">
+                    {{ value.image_file }}
                     <div class="card-data flex flex-col grow p-3">
                         <h4><b>{{ value.jour_title }}</b></h4>
                         <p>{{ value.country }}, {{ value.state_province }}, {{ value.city }}</p>
@@ -85,10 +86,6 @@ export default {
     created() {
         axios
             .get("http://localhost:3000", {
-
-                // params: {
-                //     search: this.search,
-                // },
             })
             .then((response) => {
                 this.getData = response.data;

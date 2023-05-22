@@ -6,6 +6,7 @@ const multer = require("multer");
 const Joi = require("joi");
 const { isLoggedIn } = require("../middlewares");
 const { blogOwner } = require("../middlewares");
+const { time } = require("console");
 
 router = express.Router();
 
@@ -140,7 +141,7 @@ router.post("/memoes/optional/:jour_id", isLoggedIn, upload.array("imageMemoMore
 
 //Get Memo detail ต้องเป็นblogownerไหท
 router.get("/memoes/:id", async function (req, res, next) {
-  const get_blog = await pool.query("SELECT *,DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e` FROM journey JOIN location USING (location_id) join detail_image using(jour_id)  WHERE jour_id=?", [
+  const get_blog = await pool.query("SELECT *,DATE_FORMAT(`jour_start`, '%Y/%m/%d') `date_s` , DATE_FORMAT(`jour_end`, '%Y/%m/%d') `date_e` FROM journey JOIN location USING (location_id) left join detail_image using(jour_id)  WHERE jour_id=?", [
     req.params.id,
   ]);
 
@@ -152,24 +153,44 @@ router.get("/memoes/:id", async function (req, res, next) {
 //Edit Memo
 router.put("/memoes/edit/:id", async function (req, res, next) {
   title = req.body.jour_title
-  content = req.body.jour_script
+  // console.log(req.params.id)
   start = req.body.date_s
   end = req.body.date_e
   num = req.body.co_traveller
   price = req.body.total_price
+  province = req.body.state_province
+  street = req.body.street_address
+  city = req.body.city
+  country = req.body.country
 
+  // var ID = await pool.query(
+  //   "SELECT location_id FROM journey JOIN location USING (location_id) WHERE jour_id=?", [req.params.id]
+  // )
+  // console.log(ID[0][0])
+  
+  const conn = await pool.getConnection();
+  await conn.beginTransaction();
   // title = req.body.
   try {
     let results = await conn.query(
-      "UPDATE journey SET jour_title=?, jour_script=?, jour_start=?, jour_end=?, co_traveller=?, total_price=? WHERE jour_id=?",
-      [title, content, start, end, num, price, req.params.id]
+      "UPDATE journey SET jour_title=?, jour_start=?, jour_end=?, co_traveller=?, total_price=? WHERE jour_id=?",
+      [title, start, end, num, price, req.params.id]
     )
-
+    let results2 = await conn.query(
+      "UPDATE location SET street_address=?, state_province=?, city=?, country=? WHERE location_id=?",
+      [street, province , city, country, req.body.location_id]
+    )
+    await conn.commit();
+    console.log(results)
     return res.status(200).json({
       msg: `Edit Memo ${req.params.id}!`,
     });
   } catch (error) {
+    console.log(error)
+    await conn.rollback();
     return res.status(400).json(error);
+  }finally {
+    conn.release();
   }
 });
 
